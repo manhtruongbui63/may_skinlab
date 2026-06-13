@@ -1,0 +1,381 @@
+/**
+ * =============================================================================
+ * TYPOGRAPHY DESIGN SYSTEM — IMPLEMENTATION PLAN
+ * File: src/assets/styles/typo.ds.css
+ * =============================================================================
+ *
+ * Mục tiêu
+ * - Một nguồn sự thật cho size / line-height / letter-spacing / weight / font-role
+ * - Utility composite `.typo-*` cho layout, Design System doc và app copy
+ * - Chọn typo theo mục đích sử dụng trước; class Tailwind cũ chỉ là tín hiệu migration
+ *
+ * Wiring (Phase 0)
+ * - Thêm vào src/index.css (sau shadcn, trước :root tùy chọn):
+ *     @import "./assets/styles/typo.ds.css";
+ * - Mirror import trong src/index.default.css nếu vẫn dùng làm template gốc
+ *
+ * Kiến trúc 3 tầng
+ *   [1] Primitives  :root  --typo-{role}-{prop}
+ *   [2] Tailwind    @theme inline  --text-* / --leading-* / --tracking-* (tuỳ chọn)
+ *   [3] Utilities   .typo-{role} hoặc @utility typo-{role}
+ *
+ * Font-family (đã có — không nhân đôi)
+ *   --sans, --heading, --mono  →  font-sans | font-heading | font-mono
+ *   Letter-spacing theme: --ds-letter-spacing trên [data-theme-scope] headings
+ *
+ * =============================================================================
+ * ROLE × LEVEL (12 composite utilities)
+ * =============================================================================
+ *
+ * | Utility            | Size    | Leading | Tracking   | Weight | Font      | Dùng cho                          |
+ * |--------------------|---------|---------|------------|--------|-----------|-----------------------------------|
+ * | .typo-display      | 2.25rem | 1.15    | -0.02em    | 600    | heading   | Home shell hero (marketing)       |
+ * | .typo-heading-1    | 1.875rem| 1.2     | -0.02em    | 500    | heading   | ComponentDocTemplate h1         |
+ * | .typo-heading-2    | 1.25rem | 1.25    | -0.01em    | 500    | heading   | Section h2 (Cases, Cheat sheet)   |
+ * | .typo-heading-3    | 1rem    | 1.25    | normal     | 500    | heading   | Subsection doc (nếu cần)          |
+ * | .typo-title        | 1rem    | 1.25    | normal     | 500    | heading   | Cùng spec CardTitle / DialogTitle |
+ * | .typo-body         | 1rem    | 1.35    | 0.01em     | 400    | sans      | Mô tả doc, prose                  |
+ * | .typo-ui           | 0.875rem| 1.4     | normal     | 400    | sans      | Khớp nhịp text-sm UI (reference)  |
+ * | .typo-label-md     | 0.875rem| 1.35    | normal     | 500    | sans      | Field label, menu group           |
+ * | .typo-label-sm     | 0.75rem | 1.35    | normal     | 500    | sans      | Compact label                     |
+ * | .typo-caption      | 0.75rem | 1.35    | normal     | 400    | sans      | Meta, helper, View source         |
+ * | .typo-code         | 0.9375rem| 1.35   | normal     | 400    | mono      | Cheat sheet, inline code block     |
+ * | .typo-code-sm      | 0.75rem | 1.35    | normal     | 400    | mono      | Token path, badge mono            |
+ *
+ * Màu chữ: KHÔNG bundle trong .typo-* — luôn pair:
+ *   text-foreground | text-muted-foreground | text-destructive (form error)
+ *
+ * Weight: baked-in per role; không tạo .typo-heading-1-bold trừ khi Figma có style riêng.
+ *
+ * ⚠️ EXCLUSIVE ROLE RULE:
+ *   Mỗi element chỉ được có TỐI ĐA MỘT class .typo-*.
+ *   KHÔNG BAO GIỜ gộp hai role trên cùng element (vd: typo-title + typo-heading-3).
+ *   Cascade CSS không đảm bảo role nào thắng → kết quả không predictable.
+ *
+ *   SDK component (DialogTitle, CardTitle, AlertTitle, SheetTitle, DrawerTitle,
+ *   AccordionTrigger, Badge, Button, Label, v.v.) đã baked-in .typo-* phù hợp.
+ *   Consumer KHÔNG thêm .typo-* khác vào className của những component này.
+ *   Nếu cần điều chỉnh, dùng Tailwind utilities (font-semibold, uppercase, tracking-tight)
+ *   để override thuộc tính đơn lẻ, không thay thế bằng role khác.
+ *
+ * =============================================================================
+ * PHASE 0 — Wiring (≈15 phút)
+ * =============================================================================
+ * [ ] @import typo.ds.css trong index.css (+ index.default.css)
+ * [ ] pnpm dev — build không lỗi, thứ tự layer đúng
+ * [ ] Xác nhận [data-theme-scope] .font-heading vẫn nhận --ds-letter-spacing
+ *
+ * =============================================================================
+ * PHASE 1 — Primitives :root (file này, section A bên dưới)
+ * =============================================================================
+ * [ ] Khai báo --typo-*-size | -leading | -tracking | -weight cho 12 role
+ * [ ] (Tuỳ chọn) --typo-base: 1rem — scale sau này qua --ds-font-base / html font-size
+ * [ ] Dark: không đổi size (chỉ màu qua foreground tokens)
+ *
+ * Verify: DevTools → element .typo-heading-1 → computed font-size 30px
+ *
+ * =============================================================================
+ * PHASE 2 — @theme inline (index.css hoặc cuối file này)
+ * =============================================================================
+ * [ ] Map --text-heading-1: var(--typo-heading-1-size) … (nếu muốn dùng text-heading-1)
+ * [ ] Hoặc bỏ qua phase này nếu chỉ dùng class .typo-* (ít ma trận hơn)
+ *
+ * Verify: class="text-heading-1" (nếu map) hoặc chỉ .typo-heading-1
+ *
+ * =============================================================================
+ * PHASE 3 — Composite utilities (section B bên dưới)
+ * =============================================================================
+ * [ ] @layer components { .typo-display … } HOẶC @utility typo-heading-1 { … }
+ * [ ] Heading roles: font-family: var(--heading); role tracking giữ theo --typo-*-tracking
+ * [ ] Document trong comment: primitive chỉ opt-in tại source khi migrate có chủ đích
+ *
+ * Verify: Story/doc page thử 1 element mỗi utility
+ *
+ * =============================================================================
+ * PHASE 4 — Adoption (chỉ design-system + layout, không ui/*)
+ * =============================================================================
+ * Ưu tiên migrate:
+ * [ ] src/design-system/ComponentDocTemplate.tsx
+ *       h1: typo-heading-1 + text-foreground
+ *       h2: typo-heading-2
+ *       meta path: typo-caption + font-mono (hoặc typo-code-sm)
+ * [ ] src/design-system/DesignSystemNotFound.tsx
+ * [ ] src/design-system/DesignSystemSidebar.tsx (accordion trigger → typo-title hoặc giữ text-base)
+ * [ ] src/design-system/DesignSystemLayout.tsx (header nếu có)
+ *
+ * KHÔNG migrate trong phase 4:
+ * - src/components/ui/* (trừ migrate primitive có chủ đích, từng component một)
+ * - HomePage h1 global trong index.css (phase 5 hoặc .typo-display local)
+ *
+ * =============================================================================
+ * PHASE 5 — Token inspector & Theme Studio (tuỳ chọn, sau ổn định)
+ * =============================================================================
+ * [ ] demo-token-inspect.ts: resolve font-size → --typo-*-size khi element có class typo-*
+ * [ ] theme-tokens.ts: THEME_TYPO_FIELDS scale (từng role hoặc base scale) — sau font picker
+ * [ ] Trang /design-system/typography (TypographyDoc.tsx) — matrix 12 ô + copy class
+ *
+ * =============================================================================
+ * PHASE 6 — Scale & responsive (khi cần)
+ * =============================================================================
+ * [ ] @media (max-width: 1024px): --typo-display-size, --typo-heading-1-size (mirror h1 shell)
+ * [ ] --ds-font-base trong Theme Studio ảnh hưởng rem → document trong Typography doc
+ *
+ * =============================================================================
+ * OUT OF SCOPE (ghi nhận, không làm trong v1)
+ * =============================================================================
+ * - Refactor toàn bộ *Doc.tsx text-sm → typo-ui một cách máy móc
+ * - typo-[kind]-[level]-[weight] matrix 24+ class
+ * - Màu trong .typo-* (giữ Tailwind text-*)
+ * - Thay thế font picker --sans / --heading / --mono
+ *
+ * =============================================================================
+ */
+
+/* -----------------------------------------------------------------------------
+ * A. PRIMITIVES — :root tokens (Phase 1)
+ * ----------------------------------------------------------------------------- */
+
+:root {
+  /* display */
+  --typo-display-size: 2.25rem;
+  --typo-display-leading: 1.15;
+  --typo-display-tracking: -0.02em;
+  --typo-display-weight: 600;
+
+  /* heading (doc hierarchy) */
+  --typo-heading-1-size: 1.875rem;
+  --typo-heading-1-leading: 1.2;
+  --typo-heading-1-tracking: -0.02em;
+  --typo-heading-1-weight: 600;
+
+  --typo-heading-2-size: 1.25rem;
+  --typo-heading-2-leading: 1.25;
+  --typo-heading-2-tracking: -0.01em;
+  --typo-heading-2-weight: 500;
+
+  --typo-heading-3-size: 1rem;
+  --typo-heading-3-leading: 1.25;
+  --typo-heading-3-tracking: normal;
+  --typo-heading-3-weight: 500;
+
+  /* title (UI block — CardTitle rhythm) */
+  --typo-title-size: 1.125rem;
+  --typo-title-leading: 1.25;
+  --typo-title-tracking: normal;
+  --typo-title-weight: 500;
+
+  /* body */
+  --typo-body-size: 0.875rem;
+  --typo-body-leading: 1.35;
+  --typo-body-tracking: 0.01em;
+  --typo-body-weight: 400;
+
+  /* ui (reference — shadcn default 14px) */
+  --typo-ui-size: 0.875rem;
+  --typo-ui-leading: 1.4;
+  --typo-ui-tracking: normal;
+  --typo-ui-weight: 400;
+
+  /* label */
+  --typo-label-md-size: 0.75rem;
+  --typo-label-md-leading: 1.35;
+  --typo-label-md-tracking: normal;
+  --typo-label-md-weight: 500;
+
+  --typo-label-sm-size: 0.625rem;
+  --typo-label-sm-leading: 1.35;
+  --typo-label-sm-tracking: normal;
+  --typo-label-sm-weight: 500;
+
+  /* caption */
+  --typo-caption-size: 0.75rem;
+  --typo-caption-leading: 1.35;
+  --typo-caption-tracking: normal;
+  --typo-caption-weight: 400;
+
+  /* code */
+  --typo-code-size: 0.9375rem;
+  --typo-code-leading: 1.35;
+  --typo-code-tracking: normal;
+  --typo-code-weight: 400;
+
+  --typo-code-sm-size: 0.75rem;
+  --typo-code-sm-leading: 1.35;
+  --typo-code-sm-tracking: normal;
+  --typo-code-sm-weight: 400;
+}
+
+/* Responsive doc/display (Phase 6 — bật khi migrate HomePage) */
+/*
+@media (max-width: 1024px) {
+  :root {
+    --typo-display-size: 2.25rem;
+    --typo-heading-1-size: 1.875rem;
+  }
+}
+*/
+
+/* -----------------------------------------------------------------------------
+ * B. COMPOSITE UTILITIES (Phase 3)
+ * Dùng @layer components để gom font-size + leading + tracking + weight + family
+ * ----------------------------------------------------------------------------- */
+
+@layer components {
+  .typo-display,
+  .typo-heading-1,
+  .typo-heading-2,
+  .typo-heading-3,
+  .typo-title {
+    font-family: var(--heading);
+  }
+
+  .typo-body,
+  .typo-ui,
+  .typo-label-md,
+  .typo-label-sm,
+  .typo-caption {
+    font-family: var(--sans);
+  }
+
+  .typo-code,
+  .typo-code-sm {
+    font-family: var(--mono);
+  }
+
+  .typo-display {
+    font-size: var(--typo-display-size);
+    line-height: var(--typo-display-leading);
+    letter-spacing: var(--typo-display-tracking);
+    font-weight: var(--typo-display-weight);
+  }
+
+  .typo-heading-1 {
+    font-size: var(--typo-heading-1-size);
+    line-height: var(--typo-heading-1-leading);
+    letter-spacing: var(--typo-heading-1-tracking);
+    font-weight: var(--typo-heading-1-weight);
+  }
+
+  .typo-heading-2 {
+    font-size: var(--typo-heading-2-size);
+    line-height: var(--typo-heading-2-leading);
+    letter-spacing: var(--typo-heading-2-tracking);
+    font-weight: var(--typo-heading-2-weight);
+  }
+
+  .typo-heading-3 {
+    font-size: var(--typo-heading-3-size);
+    line-height: var(--typo-heading-3-leading);
+    letter-spacing: var(--typo-heading-3-tracking);
+    font-weight: var(--typo-heading-3-weight);
+  }
+
+  .typo-title {
+    font-size: var(--typo-title-size);
+    line-height: var(--typo-title-leading);
+    letter-spacing: var(--typo-title-tracking);
+    font-weight: var(--typo-title-weight);
+  }
+
+  .typo-body {
+    font-size: var(--typo-body-size);
+    line-height: var(--typo-body-leading);
+    letter-spacing: var(--typo-body-tracking);
+    font-weight: var(--typo-body-weight);
+  }
+
+  .typo-ui {
+    font-size: var(--typo-ui-size);
+    line-height: var(--typo-ui-leading);
+    letter-spacing: var(--typo-ui-tracking);
+    font-weight: var(--typo-ui-weight);
+  }
+
+  .typo-label-md {
+    font-size: var(--typo-label-md-size);
+    line-height: var(--typo-label-md-leading);
+    letter-spacing: var(--typo-label-md-tracking);
+    font-weight: var(--typo-label-md-weight);
+  }
+
+  .typo-label-sm {
+    font-size: var(--typo-label-sm-size);
+    line-height: var(--typo-label-sm-leading);
+    letter-spacing: var(--typo-label-sm-tracking);
+    font-weight: var(--typo-label-sm-weight);
+  }
+
+  .typo-caption {
+    font-size: var(--typo-caption-size);
+    line-height: var(--typo-caption-leading);
+    letter-spacing: var(--typo-caption-tracking);
+    font-weight: var(--typo-caption-weight);
+  }
+
+  .typo-code {
+    font-size: var(--typo-code-size);
+    line-height: var(--typo-code-leading);
+    letter-spacing: var(--typo-code-tracking);
+    font-weight: var(--typo-code-weight);
+  }
+
+  .typo-code-sm {
+    font-size: var(--typo-code-sm-size);
+    line-height: var(--typo-code-sm-leading);
+    letter-spacing: var(--typo-code-sm-tracking);
+    font-weight: var(--typo-code-sm-weight);
+  }
+}
+
+/* -----------------------------------------------------------------------------
+ * C. PHASE 2 (optional) — @theme inline trong index.css
+ *
+ * @theme inline {
+ *   --text-heading-1: var(--typo-heading-1-size);
+ *   --text-heading-2: var(--typo-heading-2-size);
+ *   ...
+ * }
+ * ----------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+ * D. CONTEXTUAL WEIGHT OVERRIDES
+ *
+ * Overlay / blocking components → font-weight 600
+ *   Những component này gián đoạn luồng thao tác, user cần nhận diện title ngay.
+ *   Áp dụng qua data-slot để tự động, consumer không cần thêm utility class.
+ *
+ * Inline / page-flow components → giữ --typo-title-weight (500)
+ *   Card, Accordion, Item, Popover, Empty xuất hiện nhiều trên cùng page
+ *   → 600 sẽ tạo visual noise.
+ *
+ * Selector dùng data-slot (thay vì class) để không tạo thêm specificity race
+ * với Tailwind utilities mà consumer có thể override.
+ * ----------------------------------------------------------------------------- */
+
+@layer components {
+  /* Overlay: Dialog */
+  [data-slot="dialog-title"].typo-title {
+    font-weight: 600;
+  }
+
+  /* Overlay: AlertDialog (blocking confirmation) */
+  [data-slot="alert-dialog-title"].typo-title {
+    font-weight: 600;
+  }
+
+  /* Overlay: Sheet */
+  [data-slot="sheet-title"].typo-title {
+    font-weight: 600;
+  }
+
+  /* Overlay: Drawer */
+  [data-slot="drawer-title"].typo-title {
+    font-weight: 600;
+  }
+
+  /* Inline alert — title cần tách bạch khỏi description */
+  [data-slot="alert-title"].typo-title {
+    font-weight: 600;
+  }
+}
+

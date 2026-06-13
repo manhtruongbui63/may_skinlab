@@ -1,0 +1,374 @@
+{
+  "HomePage": {
+    "title": "Zustand + TanStack Query セットアップ",
+    "description": "このプロジェクトはグローバル状態管理（Zustand）とサーバー状態取得（TanStack Query）が設定されました。",
+    "docs": "ドキュメント"
+  },
+  "Common": {
+    "loading": "読み込み中...",
+    "logo": "BKS",
+    "userName": "ユーザー名",
+    "userEmail": "user@example.com",
+    "login": "ログイン",
+    "register": "会員登録",
+    "switchLanguage": "言語を切り替える",
+    "toggleTheme": "テーマを切り替える",
+    "switchToLight": "ライトモードに切り替える",
+    "switchToDark": "ダークモードに切り替える",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "create": "作成",
+    "save": "保存",
+    "search": "検索",
+    "prev": "前へ",
+    "next": "次へ",
+    "back": "戻る"
+  },
+  "Api": {
+    "errors": {
+      "400": "リクエストが無効です。もう一度ご確認ください。",
+      "401": "セッションの有効期限が切れました。再度ログインしてください。",
+      "403": "この操作を実行する権限がありません。",
+      "404": "要求されたデータが見つかりません。",
+      "500": "システムが混雑しています。後ほど再度お試しください。",
+      "default": "エラーが発生しました。後ほど再度お試しください。"
+    }
+  },
+  "Network": {
+    "offline": "インターネット接続が切断されました。接続をご確認ください。",
+    "online": "インターネットに再接続しました。データを再読み込みしています..."
+  },
+  "validation": {
+    "required": "{field}は必須です",
+    "email": "{field}は有効なメールアドレスである必要があります",
+    "minLength": "{field}は{min}文字以上である必要があります",
+    "maxLength": "{field}は{max}文字以下である必要があります"
+  },
+  "action": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "create": "作成",
+    "edit": "編集",
+    "delete": "削除",
+    "search": "検索"
+  },
+  "menu": {
+    "dashboard": "ダッシュボード"
+  },
+  "ChangePassword": {
+    "trigger": "パスワード変更",
+    "title": "パスワード変更",
+    "description": "管理者アカウントのパスワードを変更します。",
+    "oldPasswordLabel": "現在のパスワード",
+    "newPasswordLabel": "新しいパスワード",
+    "confirmNewPasswordLabel": "新しいパスワード（確認）",
+    "placeholder": "••••••••",
+    "submit": "パスワードを変更",
+    "cancel": "キャンセル",
+    "success": "パスワードが正常に変更されました。",
+    "errors": {
+      "oldPasswordRequired": "現在のパスワードは必須です",
+      "newPasswordRequired": "新しいパスワードは必須です",
+      "newPasswordLength": "新しいパスワードは8〜255文字で入力してください",
+      "newPasswordDifferent": "新しいパスワードは現在のパスワードと異なる必要があります",
+      "confirmPasswordRequired": "新しいパスワード（確認）は必須です",
+      "confirmPasswordMismatch": "パスワードが一致しません"
+    },
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示"
+  },
+  "Login": {
+    "title": "おかえりなさい",
+    "subtitle": "続けるにはサインインしてください",
+    "emailLabel": "メール",
+    "emailPlaceholder": "メールを入力",
+    "passwordLabel": "パスワード",
+    "passwordPlaceholder": "••••••••",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "submit": "サインイン",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "signUp": "今すぐ登録",
+    "errors": {
+      "emailRequired": "メールは必須です",
+      "passwordRequired": "パスワードは必須です",
+      "passwordMinLength": "パスワードは6文字以上である必要があります",
+      "emailInvalid": "有効なメールアドレスを入力してください"
+    },
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示"
+  },
+  "Register": {
+    "title": "アカウント作成",
+    "subtitle": "APIで必要な項目を入力してアカウントを作成します",
+    "emailLabel": "メール",
+    "emailPlaceholder": "your@email.com",
+    "passwordLabel": "パスワード",
+    "confirmPasswordLabel": "パスワード（確認）",
+    "provinceLabel": "都道府県 / 市",
+    "provincePlaceholder": "都道府県/市を選択",
+    "noProvince": "利用可能な都道府県がありません",
+    "wardLabel": "区 / 町",
+    "wardPlaceholder": "区/町を選択",
+    "wardDisabled": "先に都道府県/市を選択してください",
+    "noWard": "利用可能な区がありません",
+    "addressLabel": "詳細住所",
+    "addressPlaceholder": "番地、通り名...",
+    "referralLabel": "紹介コード",
+    "referralOptional": "（オプション）",
+    "referralPlaceholder": "紹介コードがあれば入力してください",
+    "submit": "アカウント作成",
+    "haveAccount": "すでにアカウントをお持ちですか？",
+    "login": "サインイン",
+    "brandingTitle": "システムに参加",
+    "brandingDescription": "ビジネスの最適化と成長の旅を始めましょう。",
+    "errors": {
+      "emailRequired": "メールは必須です",
+      "passwordRequired": "パスワードは必須です",
+      "passwordMinLength": "パスワードは8文字以上で入力してください",
+      "confirmPasswordRequired": "確認用パスワードは必須です",
+      "passwordMismatch": "パスワードが一致しません",
+      "nameRequired": "表示名は必須です",
+      "nameMaxLength": "表示名は255文字以下で入力してください",
+      "emailInvalid": "有効なメールアドレスを入力してください",
+      "emailMaxLength": "メールは255文字以下で入力してください"
+    },
+    "nameLabel": "表示名",
+    "namePlaceholder": "Nguyen Van A",
+    "passwordPlaceholder": "••••••••",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示"
+  },
+  "ForgotPassword": {
+    "title": "パスワードをお忘れですか？",
+    "subtitle": "メールアドレスを入力してください。パスワード再設定用のリンクをお送りします。",
+    "emailLabel": "メールアドレス",
+    "emailPlaceholder": "name@company.com",
+    "submit": "再設定リンクを送信",
+    "brandingTitle": "アカウントの復旧",
+    "brandingDescription": "メールアドレスを入力して、安全なパスワード再設定リンクを受け取ってください。",
+    "successTitle": "メールをご確認ください",
+    "successMessage": "{email} にパスワード再設定リンクを送信しました。受信トレイと迷惑メールフォルダをご確認ください。",
+    "backToLogin": "ログインに戻る",
+    "rememberPassword": "パスワードを思い出しましたか？",
+    "toastSuccess": "パスワード再設定リンクを送信しました。",
+    "errors": {
+      "emailRequired": "メールアドレスは必須です",
+      "emailInvalid": "有効なメールアドレスを入力してください"
+    }
+  },
+  "ResetPassword": {
+    "title": "パスワードの再設定",
+    "subtitle": "アカウントの新しいパスワードを設定してください。",
+    "passwordLabel": "新しいパスワード",
+    "passwordPlaceholder": "••••••••",
+    "confirmPasswordLabel": "新しいパスワード（確認）",
+    "confirmPasswordPlaceholder": "••••••••",
+    "submit": "パスワードを再設定",
+    "brandingTitle": "新しいパスワードを設定",
+    "brandingDescription": "アカウントを保護するため、強力な新しいパスワードを作成してください。",
+    "invalidLinkTitle": "無効または期限切れのリンク",
+    "invalidLinkMessage": "このパスワード再設定リンクは無効または期限切れです。新しいリンクを請求してください。",
+    "requestNewLink": "新しいリンクを請求",
+    "backToLogin": "ログインに戻る",
+    "toastSuccess": "パスワードを再設定しました。",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示",
+    "errors": {
+      "passwordRequired": "パスワードは必須です",
+      "passwordMin": "パスワードは8文字以上で入力してください",
+      "confirmPasswordRequired": "確認用パスワードは必須です",
+      "passwordMismatch": "パスワードが一致しません",
+      "tokenRequired": "この再設定リンクには必要な情報が不足しています。"
+    }
+  },
+  "Branding": {
+    "systemName": "エンタープライズ管理システム",
+    "systemDescription": "業務プロセスを最適化し、組織のパフォーマンスを向上させる包括的なソリューション。"
+  },
+  "customers": {
+    "title": "顧客",
+    "createButton": "顧客を追加",
+    "errors": {
+      "fullName_required": "氏名は必須です。",
+      "phone_invalid": "電話番号が無効です。",
+      "birthDate_invalid": "生年月日が無効です。"
+    },
+    "toasts": {
+      "createSuccess": "顧客が正常に作成されました。",
+      "updateSuccess": "顧客情報が正常に更新されました。",
+      "deleteSuccess": "顧客が正常に削除されました。"
+    },
+    "labels": {
+      "fullName": "氏名",
+      "phone": "電話番号",
+      "birthDate": "生年月日",
+      "age": "年齢",
+      "gender": "性別",
+      "source": "ソース",
+      "address": "住所",
+      "status": "ステータス",
+      "outstandingAmount": "未払い金額",
+      "actions": "操作",
+      "tabVisits": "来院履歴",
+      "tabPlans": "治療計画",
+      "tabInvoices": "請求書と未払い",
+      "visitDate": "来院日",
+      "doctorName": "医師",
+      "diagnosis": "診断",
+      "notes": "ノート",
+      "noDiagnosis": "診断なし",
+      "planName": "計画名",
+      "startDate": "開始日",
+      "endDate": "終了日",
+      "invoiceNumber": "請求書番号",
+      "issueDate": "発行日",
+      "amount": "総額",
+      "paidAmount": "支払済金額",
+      "emptyVisits": "来院履歴がありません",
+      "emptyPlans": "治療計画が見つかりません",
+      "emptyInvoices": "請求書が見つかりません"
+
+    },
+    "placeholders": {
+      "search": "氏名または電話番号で検索...",
+      "gender": "全ての性別",
+      "source": "全てのソース",
+      "status": "全てのステータス",
+      "birthDate": "例: 1990-05-15",
+      "address": "住所を入力..."
+    },
+    "filters": {
+      "reset": "リセット"
+    },
+    "genders": {
+      "1": "男性",
+      "2": "女性",
+      "3": "その他"
+    },
+    "sources": {
+      "1": "Facebook",
+      "2": "Google",
+      "3": "ウェブサイト",
+      "4": "紹介",
+      "5": "直接来店"
+    },
+    "statuses": {
+      "0": "非アクティブ",
+      "1": "アクティブ"
+    },
+    "empty": {
+      "title": "顧客がいません",
+      "description": "最初の顧客を追加して始めましょう。"
+    },
+    "table": {
+      "loading": "顧客一覧を読み込み中...",
+      "noResults": "顧客が見つかりません。"
+    },
+    "actions": {
+      "view": "詳細を見る",
+      "edit": "編集",
+      "delete": "削除"
+    },
+    "form": {
+      "createTitle": "顧客を追加",
+      "editTitle": "顧客を編集",
+      "createDescription": "新しい顧客を作成するために情報を入力してください。",
+      "editDescription": "顧客情報を更新してください。",
+      "submit": "保存",
+      "cancel": "キャンセル"
+    },
+    "delete": {
+      "title": "顧客を削除",
+      "description": "この顧客を削除してもよいですか？この操作は元に戻せません。",
+      "confirm": "削除",
+      "cancel": "キャンセル"
+    }
+  },
+  "appointments": {
+    "title": "予約管理",
+    "createButton": "新規予約",
+    "view": {
+      "calendar": "カレンダー",
+      "table": "テーブル"
+    },
+    "errors": {
+      "customerId_required": "顧客は必須です。",
+      "appointmentDate_required": "予約日は必須です。",
+      "appointmentDate_invalid": "予約日が無効です。",
+      "appointmentTime_required": "予約時間は必須です。",
+      "appointmentTime_invalid": "予約時間は30分刻み（例：08:00、08:30など）である必要があります。",
+      "note_maxLength": "ノートは500文字以内で入力してください。",
+      "double_booking": "この時間帯には既に確定された予約があります。別の時間帯を選択してください！"
+    },
+    "toasts": {
+      "createSuccess": "予約が正常に作成されました。",
+      "updateSuccess": "予約が正常に更新されました。",
+      "deleteSuccess": "予約が正常に削除されました。",
+      "created": "予約が正常に作成されました",
+      "updated": "予約が正常に更新されました",
+      "deleted": "予約が正常に削除されました"
+    },
+    "calendar": {
+      "today": "今日",
+      "more": "他",
+      "noCustomer": "顧客なし",
+      "totalAppointments": "件の予約",
+      "sunday": "日",
+      "monday": "月",
+      "tuesday": "火",
+      "wednesday": "水",
+      "thursday": "木",
+      "friday": "金",
+      "saturday": "土"
+    },
+    "table": {
+      "loading": "予約一覧を読み込み中...",
+      "noResults": "予約が見つかりません。",
+      "retry": "再試行",
+      "pagination": "全 {total} 件中 {from} - {to} 件を表示",
+      "columns": {
+        "customer": "顧客",
+        "phone": "電話番号",
+        "date": "予約日",
+        "time": "予約時間",
+        "status": "ステータス",
+        "actions": "操作"
+      }
+    },
+    "placeholders": {
+      "customer": "顧客を選択...",
+      "date": "日付を選択...",
+      "time": "時間を選択...",
+      "note": "予約のノートを入力..."
+    },
+    "form": {
+      "createTitle": "新規予約作成",
+      "createDescription": "顧客の新しい予約を作成します。",
+      "loadingCustomers": "一覧を読み込み中..."
+    },
+    "detail": {
+      "title": "予約の詳細",
+      "editTitle": "予約の編集",
+      "noNote": "ノートはありません。",
+      "transitions": "ステータスの変更",
+      "editDescription": "予約の日付、時間、またはノートを更新します。"
+    },
+    "actions": {
+      "view": "詳細を表示",
+      "edit": "編集",
+      "delete": "削除",
+      "confirm": "確定する",
+      "checkin": "チェックイン",
+      "noshow": "無断キャンセル",
+      "cancel": "予約キャンセル",
+      "startVisit": "診療開始",
+      "backToDetail": "詳細に戻る"
+    },
+    "delete": {
+      "title": "予約の削除",
+      "description": "この予約を削除してもよろしいですか？この操作は元に戻せません。",
+      "confirm": "削除",
+      "cancel": "キャンセル"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+stages:
+  - test
+
+backend_format_and_test:
+  image: php:8.4
+  stage: test
+  services:
+    # Alias matches DB_HOST in backend/.env.testing so the test suite
+    # (APP_ENV=testing → loads .env.testing) can reach this service in CI.
+    - name: mysql:8.0
+      alias: bks-mysql-test
+  variables:
+    # Must match backend/.env.testing (single source of truth for the test DB).
+    MYSQL_DATABASE: bks_db_test
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_USER: bks_user
+    MYSQL_PASSWORD: bks_pass
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}-backend-composer-v2"
+    paths:
+      - backend/vendor/
+    policy: pull-push
+  before_script:
+    - apt-get update && apt-get install -y git unzip libzip-dev libpng-dev libjpeg-dev libfreetype6-dev
+    - docker-php-ext-install pdo_mysql zip gd bcmath
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    - cd backend
+    - composer install --no-interaction --prefer-dist --optimize-autoloader
+    - cp .env.example .env
+    - php artisan key:generate
+    # Wait for the MySQL service to accept connections before running the suite.
+    # The test DB (host/user/pass) comes from backend/.env.testing, loaded via APP_ENV=testing.
+    - "until php -r \"exit(@fsockopen('bks-mysql-test', 3306) ? 0 : 1);\"; do echo 'waiting for mysql...'; sleep 2; done"
+  script:
+    - php artisan code:format --check
+    - php artisan test
+  rules:
+    - changes:
+        - backend/**
+
+# frontend_lint:
+#   stage: test
+#   image: node:24
+#   cache:
+#     key: "${CI_COMMIT_REF_SLUG}-frontend-pnpm"
+#     paths:
+#       - frontend/node_modules/
+#       - .pnpm-store/
+#     policy: pull-push
+#   before_script:
+#     - cd frontend
+#     - npm install -g pnpm
+#     - pnpm install --frozen-lockfile
+#   script:
+#     - pnpm lint
+#   rules:
+#     - changes:
+#         - frontend/**

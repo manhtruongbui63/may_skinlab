@@ -1,0 +1,374 @@
+{
+  "HomePage": {
+    "title": "Cài đặt Zustand + TanStack Query",
+    "description": "Dự án này hiện đã được cấu hình quản lý state toàn cục (Zustand) và fetch dữ liệu từ server (TanStack Query).",
+    "docs": "Tài liệu"
+  },
+  "Common": {
+    "loading": "Đang tải...",
+    "logo": "BKS",
+    "userName": "Tên người dùng",
+    "userEmail": "user@example.com",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "switchLanguage": "Chuyển đổi ngôn ngữ",
+    "toggleTheme": "Chuyển đổi giao diện",
+    "switchToLight": "Chuyển sang chế độ sáng",
+    "switchToDark": "Chuyển sang chế độ tối",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "create": "Tạo mới",
+    "save": "Lưu",
+    "search": "Tìm kiếm",
+    "prev": "Trước",
+    "next": "Sau",
+    "back": "Quay lại"
+  },
+  "Api": {
+    "errors": {
+      "400": "Yêu cầu không hợp lệ. Vui lòng kiểm tra lại.",
+      "401": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+      "403": "Bạn không có quyền thực hiện hành động này.",
+      "404": "Không tìm thấy dữ liệu yêu cầu.",
+      "500": "Hệ thống đang bận một chút. Bạn vui lòng thử lại sau nhé!",
+      "default": "Đã có lỗi xảy ra. Vui lòng thử lại sau."
+    }
+  },
+  "Network": {
+    "offline": "Mất kết nối Internet. Vui lòng kiểm tra lại đường truyền.",
+    "online": "Đã kết nối lại Internet. Đang tải lại dữ liệu..."
+  },
+  "validation": {
+    "required": "{field} là bắt buộc",
+    "email": "{field} phải là email hợp lệ",
+    "minLength": "{field} phải có ít nhất {min} ký tự",
+    "maxLength": "{field} không được vượt quá {max} ký tự"
+  },
+  "action": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "create": "Tạo",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "search": "Tìm kiếm"
+  },
+  "menu": {
+    "dashboard": "Bảng điều khiển"
+  },
+  "ChangePassword": {
+    "trigger": "Đổi mật khẩu",
+    "title": "Đổi mật khẩu",
+    "description": "Thay đổi mật khẩu cho tài khoản quản trị của bạn.",
+    "oldPasswordLabel": "Mật khẩu cũ",
+    "newPasswordLabel": "Mật khẩu mới",
+    "confirmNewPasswordLabel": "Xác nhận mật khẩu mới",
+    "placeholder": "••••••••",
+    "submit": "Đổi mật khẩu",
+    "cancel": "Hủy",
+    "success": "Đổi mật khẩu thành công.",
+    "errors": {
+      "oldPasswordRequired": "Mật khẩu hiện tại không được để trống",
+      "newPasswordRequired": "Mật khẩu mới không được để trống",
+      "newPasswordLength": "Mật khẩu mới phải từ 8 đến 255 ký tự",
+      "newPasswordDifferent": "Mật khẩu mới phải khác mật khẩu hiện tại",
+      "confirmPasswordRequired": "Xác nhận mật khẩu mới không được để trống",
+      "confirmPasswordMismatch": "Mật khẩu xác nhận không khớp"
+    },
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu"
+  },
+  "Login": {
+    "title": "Chào mừng trở lại",
+    "subtitle": "Đăng nhập để tiếp tục",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Nhập email",
+    "passwordLabel": "Mật khẩu",
+    "passwordPlaceholder": "••••••••",
+    "forgotPassword": "Quên mật khẩu?",
+    "submit": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản?",
+    "signUp": "Đăng ký ngay",
+    "errors": {
+      "emailRequired": "Email không được để trống",
+      "passwordRequired": "Mật khẩu không được để trống",
+      "passwordMinLength": "Mật khẩu phải chứa ít nhất 6 ký tự",
+      "emailInvalid": "Email không hợp lệ"
+    },
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu"
+  },
+  "Branding": {
+    "systemName": "Hệ thống Quản trị Doanh nghiệp",
+    "systemDescription": "Giải pháp toàn diện tối ưu hóa quy trình vận hành và nâng cao hiệu suất tổ chức."
+  },
+  "Register": {
+    "title": "Đăng ký tài khoản",
+    "subtitle": "Tạo tài khoản bằng thông tin API yêu cầu",
+    "emailLabel": "Email",
+    "emailPlaceholder": "email@cuaban.com",
+    "passwordLabel": "Mật khẩu",
+    "confirmPasswordLabel": "Xác nhận mật khẩu",
+    "provinceLabel": "Tỉnh / Thành phố",
+    "provincePlaceholder": "Chọn tỉnh/thành",
+    "noProvince": "Không có tỉnh/thành",
+    "wardLabel": "Xã / Phường",
+    "wardPlaceholder": "Chọn xã/phường",
+    "wardDisabled": "Chọn tỉnh/thành trước",
+    "noWard": "Không có xã/phường",
+    "addressLabel": "Địa chỉ chi tiết",
+    "addressPlaceholder": "Số nhà, tên đường...",
+    "referralLabel": "Mã giới thiệu",
+    "referralOptional": "(Tuỳ chọn)",
+    "referralPlaceholder": "Nhập mã giới thiệu nếu có",
+    "submit": "Tạo tài khoản",
+    "haveAccount": "Đã có tài khoản?",
+    "login": "Đăng nhập",
+    "brandingTitle": "Gia nhập Hệ thống",
+    "brandingDescription": "Khởi đầu hành trình tối ưu hóa và phát triển doanh nghiệp của bạn.",
+    "errors": {
+      "emailRequired": "Email không được để trống",
+      "passwordRequired": "Mật khẩu không được để trống",
+      "passwordMinLength": "Mật khẩu phải chứa ít nhất 8 ký tự",
+      "confirmPasswordRequired": "Xác nhận mật khẩu không được để trống",
+      "passwordMismatch": "Mật khẩu không khớp",
+      "nameRequired": "Tên hiển thị không được để trống",
+      "nameMaxLength": "Tên hiển thị không được vượt quá 255 ký tự",
+      "emailInvalid": "Email không hợp lệ",
+      "emailMaxLength": "Email không được vượt quá 255 ký tự"
+    },
+    "nameLabel": "Tên hiển thị",
+    "namePlaceholder": "Nguyễn Văn A",
+    "passwordPlaceholder": "••••••••",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu"
+  },
+  "ForgotPassword": {
+    "title": "Quên mật khẩu?",
+    "subtitle": "Nhập email và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@company.com",
+    "submit": "Gửi liên kết đặt lại",
+    "brandingTitle": "Khôi phục tài khoản",
+    "brandingDescription": "Nhập email để nhận liên kết đặt lại mật khẩu an toàn.",
+    "successTitle": "Kiểm tra email của bạn",
+    "successMessage": "Chúng tôi đã gửi liên kết đặt lại mật khẩu tới {email}. Vui lòng kiểm tra hộp thư và mục spam.",
+    "backToLogin": "Quay lại Đăng nhập",
+    "rememberPassword": "Nhớ mật khẩu rồi?",
+    "toastSuccess": "Đã gửi liên kết đặt lại mật khẩu.",
+    "errors": {
+      "emailRequired": "Email là bắt buộc",
+      "emailInvalid": "Email không hợp lệ"
+    }
+  },
+  "ResetPassword": {
+    "title": "Đặt lại mật khẩu",
+    "subtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
+    "passwordLabel": "Mật khẩu mới",
+    "passwordPlaceholder": "••••••••",
+    "confirmPasswordLabel": "Xác nhận mật khẩu mới",
+    "confirmPasswordPlaceholder": "••••••••",
+    "submit": "Đặt lại mật khẩu",
+    "brandingTitle": "Thiết lập mật khẩu mới",
+    "brandingDescription": "Tạo mật khẩu mới đủ mạnh để bảo vệ tài khoản.",
+    "invalidLinkTitle": "Liên kết không hợp lệ hoặc đã hết hạn",
+    "invalidLinkMessage": "Liên kết đặt lại mật khẩu này không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.",
+    "requestNewLink": "Yêu cầu liên kết mới",
+    "backToLogin": "Quay lại Đăng nhập",
+    "toastSuccess": "Mật khẩu của bạn đã được đặt lại.",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "errors": {
+      "passwordRequired": "Mật khẩu là bắt buộc",
+      "passwordMin": "Mật khẩu phải có ít nhất 8 ký tự",
+      "confirmPasswordRequired": "Xác nhận mật khẩu là bắt buộc",
+      "passwordMismatch": "Mật khẩu không khớp",
+      "tokenRequired": "Liên kết đặt lại thiếu thông tin bắt buộc."
+    }
+  },
+  "customers": {
+    "title": "Khách hàng",
+    "createButton": "Thêm khách hàng",
+    "errors": {
+      "fullName_required": "Họ và tên là bắt buộc.",
+      "phone_invalid": "Số điện thoại không hợp lệ.",
+      "birthDate_invalid": "Ngày sinh không hợp lệ."
+    },
+    "toasts": {
+      "createSuccess": "Tạo khách hàng thành công.",
+      "updateSuccess": "Cập nhật khách hàng thành công.",
+      "deleteSuccess": "Xóa khách hàng thành công."
+    },
+    "labels": {
+      "fullName": "Họ và tên",
+      "phone": "Số điện thoại",
+      "birthDate": "Ngày sinh",
+      "age": "Tuổi",
+      "gender": "Giới tính",
+      "source": "Nguồn",
+      "address": "Địa chỉ",
+      "status": "Trạng thái",
+      "outstandingAmount": "Dư nợ",
+      "actions": "Thao tác",
+      "tabVisits": "Lịch sử khám",
+      "tabPlans": "Kế hoạch điều trị",
+      "tabInvoices": "Hóa đơn & Công nợ",
+      "visitDate": "Ngày khám",
+      "doctorName": "Bác sĩ",
+      "diagnosis": "Chẩn đoán",
+      "notes": "Ghi chú",
+      "noDiagnosis": "Không có chẩn đoán",
+      "planName": "Tên kế hoạch",
+      "startDate": "Ngày bắt đầu",
+      "endDate": "Ngày kết thúc",
+      "invoiceNumber": "Số hóa đơn",
+      "issueDate": "Ngày phát hành",
+      "amount": "Tổng tiền",
+      "paidAmount": "Đã thanh toán",
+      "emptyVisits": "Không có lịch sử khám bệnh nào",
+      "emptyPlans": "Không có kế hoạch điều trị nào",
+      "emptyInvoices": "Không có hóa đơn nào"
+
+    },
+    "placeholders": {
+      "search": "Tìm theo tên hoặc số điện thoại...",
+      "gender": "Tất cả giới tính",
+      "source": "Tất cả nguồn",
+      "status": "Tất cả trạng thái",
+      "birthDate": "VD: 1990-05-15",
+      "address": "Nhập địa chỉ..."
+    },
+    "filters": {
+      "reset": "Đặt lại"
+    },
+    "genders": {
+      "1": "Nam",
+      "2": "Nữ",
+      "3": "Khác"
+    },
+    "sources": {
+      "1": "Facebook",
+      "2": "Google",
+      "3": "Website",
+      "4": "Giới thiệu",
+      "5": "Đến trực tiếp"
+    },
+    "statuses": {
+      "0": "Không hoạt động",
+      "1": "Hoạt động"
+    },
+    "empty": {
+      "title": "Chưa có khách hàng",
+      "description": "Thêm khách hàng đầu tiên để bắt đầu."
+    },
+    "table": {
+      "loading": "Đang tải danh sách...",
+      "noResults": "Không tìm thấy khách hàng nào."
+    },
+    "actions": {
+      "view": "Xem chi tiết",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa"
+    },
+    "form": {
+      "createTitle": "Thêm khách hàng",
+      "editTitle": "Chỉnh sửa khách hàng",
+      "createDescription": "Điền thông tin để tạo khách hàng mới.",
+      "editDescription": "Cập nhật thông tin khách hàng.",
+      "submit": "Lưu",
+      "cancel": "Hủy"
+    },
+    "delete": {
+      "title": "Xóa khách hàng",
+      "description": "Bạn có chắc chắn muốn xóa khách hàng này? Thao tác này không thể hoàn tác.",
+      "confirm": "Xóa",
+      "cancel": "Hủy"
+    }
+  },
+  "appointments": {
+    "title": "Quản lý lịch hẹn",
+    "createButton": "Đặt lịch hẹn mới",
+    "view": {
+      "calendar": "Lịch",
+      "table": "Bảng"
+    },
+    "errors": {
+      "customerId_required": "Khách hàng là bắt buộc.",
+      "appointmentDate_required": "Ngày hẹn là bắt buộc.",
+      "appointmentDate_invalid": "Ngày hẹn không hợp lệ.",
+      "appointmentTime_required": "Giờ hẹn là bắt buộc.",
+      "appointmentTime_invalid": "Giờ hẹn phải nằm trên các mốc 30 phút (ví dụ: 08:00, 08:30).",
+      "note_maxLength": "Ghi chú không được vượt quá 500 ký tự.",
+      "double_booking": "Khung giờ này đã có lịch hẹn được xác nhận. Vui lòng chọn khung giờ khác!"
+    },
+    "toasts": {
+      "createSuccess": "Tạo lịch hẹn thành công.",
+      "updateSuccess": "Cập nhật lịch hẹn thành công.",
+      "deleteSuccess": "Xóa lịch hẹn thành công.",
+      "created": "Đặt lịch hẹn thành công",
+      "updated": "Cập nhật lịch hẹn thành công",
+      "deleted": "Xóa lịch hẹn thành công"
+    },
+    "calendar": {
+      "today": "Hôm nay",
+      "more": "thêm",
+      "noCustomer": "Không có khách hàng",
+      "totalAppointments": "lịch hẹn",
+      "sunday": "CN",
+      "monday": "T2",
+      "tuesday": "T3",
+      "wednesday": "T4",
+      "thursday": "T5",
+      "friday": "T6",
+      "saturday": "T7"
+    },
+    "table": {
+      "loading": "Đang tải danh sách lịch hẹn...",
+      "noResults": "Không tìm thấy lịch hẹn nào.",
+      "retry": "Thử lại",
+      "pagination": "Hiển thị {from} - {to} trong tổng số {total} lịch hẹn",
+      "columns": {
+        "customer": "Khách hàng",
+        "phone": "Số điện thoại",
+        "date": "Ngày hẹn",
+        "time": "Giờ hẹn",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      }
+    },
+    "placeholders": {
+      "customer": "Chọn khách hàng...",
+      "date": "Chọn ngày...",
+      "time": "Chọn giờ...",
+      "note": "Nhập ghi chú cuộc hẹn..."
+    },
+    "form": {
+      "createTitle": "Đặt lịch hẹn",
+      "createDescription": "Tạo lịch hẹn mới cho khách hàng.",
+      "loadingCustomers": "Đang tải danh sách..."
+    },
+    "detail": {
+      "title": "Chi tiết lịch hẹn",
+      "editTitle": "Chỉnh sửa lịch hẹn",
+      "noNote": "Không có ghi chú.",
+      "transitions": "Chuyển trạng thái",
+      "editDescription": "Cập nhật ngày, giờ hoặc ghi chú cho lịch hẹn."
+    },
+    "actions": {
+      "view": "Xem chi tiết",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "confirm": "Xác nhận",
+      "checkin": "Check-in",
+      "noshow": "Báo vắng",
+      "cancel": "Hủy hẹn",
+      "startVisit": "Bắt đầu khám",
+      "backToDetail": "Quay lại chi tiết"
+    },
+    "delete": {
+      "title": "Xóa lịch hẹn",
+      "description": "Bạn có chắc chắn muốn xóa lịch hẹn này? Thao tác này không thể hoàn tác.",
+      "confirm": "Xóa",
+      "cancel": "Hủy"
+    }
+  }
+}

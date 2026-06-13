@@ -1,0 +1,59 @@
+# Production override — stacks on top of docker-compose.yml.
+#
+#   Dev (unchanged):  docker compose up -d
+#   Production:       docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Only the deltas needed for production live here; everything else (mysql,
+# redis, app, queue) is inherited verbatim from the base file.
+services:
+  # Next.js — build the standalone image and run it, instead of the dev server.
+  node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      target: production
+      # NEXT_PUBLIC_* are inlined at build time. Derive the public URLs from the
+      # single source of truth (APP_DOMAIN/API_DOMAIN in the root .env). The `:?`
+      # makes the build fail fast with a clear message if they are not set.
+      args:
+        NEXT_PUBLIC_API_URL: "https://${API_DOMAIN:?set API_DOMAIN in .env}"
+        NEXT_PUBLIC_APP_URL: "https://${APP_DOMAIN:?set APP_DOMAIN in .env}"
+    # Drop the inherited dev bind-mount (./frontend) and dev install command:
+    # production runs purely from the built image. `!reset` clears the lists
+    # inherited from the base file (Compose v2.24+).
+    volumes: !reset []
+    command: !reset null
+    # The base service inherits `env_file: .env`, which would inject
+    # NODE_ENV=development at runtime and override the image. Re-assert the
+    # production runtime here (environment wins over env_file).
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+    restart: unless-stopped
+
+  # Nginx — serve both vhosts on 80/443. server_name is injected from the env
+  # below via the nginx image's envsubst entrypoint (templates -> conf.d).
+  nginx:
+    # Domains come from the root .env (single source of truth). NGINX_ENVSUBST_*
+    # makes the official entrypoint render /etc/nginx/templates/*.template into
+    # /etc/nginx/conf.d at startup, substituting ONLY these two vars (so nginx's
+    # own $host, $uri, $connection_upgrade… are left untouched).
+    environment:
+      APP_DOMAIN: "${APP_DOMAIN:?set APP_DOMAIN in .env}"
+      API_DOMAIN: "${API_DOMAIN:?set API_DOMAIN in .env}"
+      NGINX_ENVSUBST_FILTER: "^(APP|API)_DOMAIN$$"
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+    # !override fully replaces the inherited volumes (drops the dev conf.d :ro
+    # mount so the entrypoint can write the rendered config into conf.d).
+    volumes: !override
+      - ./backend:/var/www/html
+      - ./docker/nginx/prod/templates:/etc/nginx/templates:ro
+      # TLS certificates (Let's Encrypt / Cloudflare origin cert). Create the
+      # host dir and drop fullchain.pem + privkey.pem in before enabling 443.
+      - ./docker/nginx/certs:/etc/nginx/certs:ro
+    # !override replaces the inherited "8000:80" instead of merging with it.
+    ports: !override
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped

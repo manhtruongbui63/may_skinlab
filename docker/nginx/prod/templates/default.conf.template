@@ -1,0 +1,128 @@
+# Production vhosts — domains are injected at container start by the nginx
+# envsubst entrypoint from ${APP_DOMAIN} / ${API_DOMAIN} (set in the root .env,
+# passed through docker-compose.prod.yml). Nothing here is hard-coded.
+#
+#   app  ->  ${APP_DOMAIN}        -> Next.js standalone (node:3000)
+#   api  ->  ${API_DOMAIN}        -> Laravel / PHP-FPM (app:9000)
+#
+# TLS: the HTTP blocks below work immediately. For HTTPS either
+#   (a) put fullchain.pem + privkey.pem under docker/nginx/certs and enable the
+#       443 blocks at the bottom, or
+#   (b) front the origin with Cloudflare (proxied) — it terminates TLS and these
+#       HTTP blocks stay as the origin.
+
+############################  FRONTEND  (${APP_DOMAIN})  ######################
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${APP_DOMAIN};
+
+    # Proxy everything to the Next.js standalone server.
+    location / {
+        proxy_pass http://node:3000;
+        proxy_http_version 1.1;
+
+        # WebSocket / streaming upgrades
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 60s;
+    }
+
+    # Long-cache Next.js immutable build assets
+    location /_next/static/ {
+        proxy_pass http://node:3000;
+        proxy_set_header Host $host;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+}
+
+############################  BACKEND  (${API_DOMAIN})  #######################
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${API_DOMAIN};
+    root /var/www/html/public;
+
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+    charset utf-8;
+
+    client_max_body_size 20M;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass app:9000;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+###############################################################################
+# HTTPS — enable after placing certs in docker/nginx/certs/. Then change the
+# port-80 blocks above to redirect:  return 301 https://$host$request_uri;
+###############################################################################
+# server {
+#     listen 443 ssl;
+#     listen [::]:443 ssl;
+#     http2 on;
+#     server_name ${APP_DOMAIN};
+#
+#     ssl_certificate     /etc/nginx/certs/${APP_DOMAIN}/fullchain.pem;
+#     ssl_certificate_key /etc/nginx/certs/${APP_DOMAIN}/privkey.pem;
+#
+#     location / {
+#         proxy_pass http://node:3000;
+#         proxy_http_version 1.1;
+#         proxy_set_header Upgrade $http_upgrade;
+#         proxy_set_header Connection $connection_upgrade;
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#         proxy_cache_bypass $http_upgrade;
+#     }
+# }
+#
+# server {
+#     listen 443 ssl;
+#     listen [::]:443 ssl;
+#     http2 on;
+#     server_name ${API_DOMAIN};
+#     root /var/www/html/public;
+#     index index.php;
+#     client_max_body_size 20M;
+#
+#     ssl_certificate     /etc/nginx/certs/${API_DOMAIN}/fullchain.pem;
+#     ssl_certificate_key /etc/nginx/certs/${API_DOMAIN}/privkey.pem;
+#
+#     location / { try_files $uri $uri/ /index.php?$query_string; }
+#     location ~ \.php$ {
+#         fastcgi_pass app:9000;
+#         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+#         include fastcgi_params;
+#         fastcgi_hide_header X-Powered-By;
+#     }
+#     location ~ /\.(?!well-known).* { deny all; }
+# }

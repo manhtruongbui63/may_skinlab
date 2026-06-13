@@ -1,0 +1,7 @@
+# Maps the Upgrade header to the right Connection value for WebSocket / HTTP
+# upgrades. Loaded first via the 00- prefix. No env vars here — passed through
+# the envsubst entrypoint unchanged.
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}

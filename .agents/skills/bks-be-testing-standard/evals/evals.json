@@ -1,0 +1,65 @@
+{
+  "skill_name": "bks-be-testing-standard",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to write tests for a new UserRegistration API endpoint in Laravel. The endpoint accepts email, password, and name, validates them, creates a user, and sends a welcome email. What tests should I write?",
+      "expected_output": "Should provide Feature Test with happy path, validation errors (422), duplicate email handling, and side effect verification (email sent).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My service class has complex branching logic with 5 different conditions. The Feature Test is too hard to write because of external dependencies. What should I do?",
+      "expected_output": "Should recommend Unit Tests for the service class, explaining the fallback rule and that each branch needs its own test.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "How do I test that my API endpoint handles SQL injection attempts properly?",
+      "expected_output": "Should provide SQL injection test example with malicious payloads like '1 OR 1=1', '; DROP TABLE', etc.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "I'm seeing N+1 queries in my API response. How should I test for and prevent this?",
+      "expected_output": "Should explain DB::enableQueryLog() and assertLessThan on query count, with performance thresholds.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Write a test that ensures users from tenant A cannot access resources from tenant B (IDOR prevention).",
+      "expected_output": "Should provide IDOR test example creating two tenants and asserting 404/403 for cross-tenant access.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "I need to test concurrent updates to the same resource. How do I handle optimistic locking in tests?",
+      "expected_output": "Should provide concurrency test with two concurrent requests and assert 409 Conflict for stale version.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "How do I test that my migration can be rolled back safely without losing data?",
+      "expected_output": "Should provide migration rollback test using artisan migrate and migrate:rollback commands.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "What edge cases should I test for a date input field in my API?",
+      "expected_output": "Should list timezone, DST transition, leap year, and invalid dates as edge cases to test.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Should I use Feature Test or Unit Test for my background job that processes payments?",
+      "expected_output": "Should reference the decision tree and recommend Unit Test for BackgroundService::run() with explanation why.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "How do I write a test that ensures my API doesn't expose sensitive fields like password or secret_token in responses?",
+      "expected_output": "Should provide schema validation test with assertArrayNotHasKey for sensitive fields.",
+      "files": []
+    }
+  ]
+}

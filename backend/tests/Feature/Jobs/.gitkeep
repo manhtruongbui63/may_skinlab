@@ -1,0 +1,10 @@
+# Laravel Jobs Feature & Integration Tests
+# Place feature/integration tests for background queue Jobs here.
+#
+# Rule: Use Queue::fake() to assert that jobs are correctly dispatched with standard Laravel constructs.
+# Example:
+#   Queue::fake();
+#   // Call your API or Service
+#   Queue::assertPushed(MyJob::class, function ($job) {
+#       return $job->dataId === $expectedId;
+#   });

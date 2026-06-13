@@ -1,0 +1,190 @@
+PHPUnit 12.5.17 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.21
+Configuration: /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/phpunit.xml
+
+.[41;37mF[0m[41;37mF[0m[41;37mF[0m[41;37mF[0m[41;37mF[0m[41;37mF[0m                                                             7 / 7 (100%)
+
+Time: 00:00.215, Memory: 54.50 MB
+
+There were 6 failures:
+
+1) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_required_fields_are_missing
+Failed to find a validation error in the response for key: 'name'
+
+Response does not have JSON validation errors.
+Failed asserting that an array has the key 'name'.
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1122
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1050
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:89
+
+2) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_input_formats_are_invalid
+Failed to find a validation error in the response for key: 'email'
+
+Response does not have JSON validation errors.
+Failed asserting that an array has the key 'email'.
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1122
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1050
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:110
+
+3) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_password_does_not_meet_complexity
+Failed to find a validation error in the response for key: 'password'
+
+Response does not have JSON validation errors.
+Failed asserting that an array has the key 'password'.
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1122
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1050
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:138
+
+4) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_password_is_not_confirmed
+Failed to find a validation error in the response for key: 'password'
+
+Response does not have JSON validation errors.
+Failed asserting that an array has the key 'password'.
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1122
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1050
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:160
+
+5) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_fields_exceed_max_lengths
+Failed to find a validation error in the response for key: 'name'
+
+Response does not have JSON validation errors.
+Failed asserting that an array has the key 'name'.
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1122
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:1050
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:184
+
+6) Tests\Feature\User\Auth\UserRegisterTest::test_register_fails_when_email_already_exists
+Expected response status code [422] but received 500.
+Failed asserting that 500 is identical to 422.
+
+The following exception occurred during the last request:
+
+PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: users.email in /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php:587
+Stack trace:
+#0 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(587): PDOStatement->execute()
+#1 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(830): Illuminate\Database\Connection->{closure:Illuminate\Database\Connection::statement():576}()
+#2 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(797): Illuminate\Database\Connection->runQueryCallback()
+#3 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\Database\Connection->run()
+#4 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(540): Illuminate\Database\Connection->statement()
+#5 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/Processor.php(32): Illuminate\Database\Connection->insert()
+#6 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4246): Illuminate\Database\Query\Processors\Processor->processInsertGetId()
+#7 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(2270): Illuminate\Database\Query\Builder->insertGetId()
+#8 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1650): Illuminate\Database\Eloquent\Builder->__call()
+#9 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1566): Illuminate\Database\Eloquent\Model->insertAndSetId()
+#10 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1370): Illuminate\Database\Eloquent\Model->performInsert()
+#11 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1224): Illuminate\Database\Eloquent\Model->save()
+#12 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Support/helpers.php(393): Illuminate\Database\Eloquent\Builder->{closure:Illuminate\Database\Eloquent\Builder::create():1223}()
+#13 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1223): tap()
+#14 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/app/Services/Api/AuthService.php(50): Illuminate\Database\Eloquent\Builder->create()
+#15 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/app/Http/Controllers/Api/AuthController.php(47): App\Services\Api\AuthService->register()
+#16 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App\Http\Controllers\Api\AuthController->register()
+#17 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\Routing\Controller->callAction()
+#18 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch()
+#19 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Route.php(215): Illuminate\Routing\Route->runController()
+#20 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate\Routing\Route->run()
+#21 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}()
+#22 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}()
+#23 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle()
+#24 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}()
+#25 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline->then()
+#26 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router->runRouteWithinStack()
+#27 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router->runRoute()
+#28 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router->dispatchToRoute()
+#29 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router->dispatch()
+#30 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}()
+#31 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}()
+#32 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle()
+#33 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}()
+#34 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline->then()
+#35 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#36 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle()
+#37 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call()
+#38 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(411): Illuminate\Foundation\Testing\TestCase->json()
+#39 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php(205): Illuminate\Foundation\Testing\TestCase->postJson()
+#40 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(1332): Tests\Feature\User\Auth\UserRegisterTest->test_register_fails_when_email_already_exists()
+#41 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase->runTest()
+#42 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()
+#43 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(359): PHPUnit\Framework\TestRunner->run()
+#44 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestCase->run()
+#45 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestSuite->run()
+#46 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestSuite->run()
+#47 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+#48 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/TextUI/Application.php(229): PHPUnit\TextUI\TestRunner->run()
+#49 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application->run()
+#50 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/bin/phpunit(122): include('...')
+#51 {main}
+
+Next Illuminate\Database\UniqueConstraintViolationException: SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: users.email (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "email", "password", "status", "updated_at", "created_at") values (Alice Smith, existing@example.com, $2y$04$vFYAdXaUAzBncL6iUD.t4.1Nr.zkJQKYgtV1qTUb.Skf88sgz/T/K, 1, 2026-05-28 18:27:04, 2026-05-28 18:27:04)) in /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php:841
+Stack trace:
+#0 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(797): Illuminate\Database\Connection->runQueryCallback()
+#1 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(576): Illuminate\Database\Connection->run()
+#2 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Connection.php(540): Illuminate\Database\Connection->statement()
+#3 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Query/Processors/Processor.php(32): Illuminate\Database\Connection->insert()
+#4 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php(4246): Illuminate\Database\Query\Processors\Processor->processInsertGetId()
+#5 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(2270): Illuminate\Database\Query\Builder->insertGetId()
+#6 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1650): Illuminate\Database\Eloquent\Builder->__call()
+#7 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1566): Illuminate\Database\Eloquent\Model->insertAndSetId()
+#8 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(1370): Illuminate\Database\Eloquent\Model->performInsert()
+#9 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1224): Illuminate\Database\Eloquent\Model->save()
+#10 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Support/helpers.php(393): Illuminate\Database\Eloquent\Builder->{closure:Illuminate\Database\Eloquent\Builder::create():1223}()
+#11 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php(1223): tap()
+#12 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/app/Services/Api/AuthService.php(50): Illuminate\Database\Eloquent\Builder->create()
+#13 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/app/Http/Controllers/Api/AuthController.php(47): App\Services\Api\AuthService->register()
+#14 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): App\Http\Controllers\Api\AuthController->register()
+#15 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(43): Illuminate\Routing\Controller->callAction()
+#16 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Route.php(269): Illuminate\Routing\ControllerDispatcher->dispatch()
+#17 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Route.php(215): Illuminate\Routing\Route->runController()
+#18 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(822): Illuminate\Routing\Route->run()
+#19 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Routing\Router->{closure:Illuminate\Routing\Router::runRouteWithinStack():821}()
+#20 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(52): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}()
+#21 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle()
+#22 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}()
+#23 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline->then()
+#24 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router->runRouteWithinStack()
+#25 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router->runRoute()
+#26 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router->dispatchToRoute()
+#27 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router->dispatch()
+#28 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel->{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}()
+#29 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(74): Illuminate\Pipeline\Pipeline->{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}()
+#30 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors->handle()
+#31 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline->{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}()
+#32 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline->then()
+#33 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter()
+#34 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle()
+#35 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(573): Illuminate\Foundation\Testing\TestCase->call()
+#36 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(411): Illuminate\Foundation\Testing\TestCase->json()
+#37 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php(205): Illuminate\Foundation\Testing\TestCase->postJson()
+#38 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(1332): Tests\Feature\User\Auth\UserRegisterTest->test_register_fails_when_email_already_exists()
+#39 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(519): PHPUnit\Framework\TestCase->runTest()
+#40 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestRunner/TestRunner.php(99): PHPUnit\Framework\TestCase->runBare()
+#41 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestCase.php(359): PHPUnit\Framework\TestRunner->run()
+#42 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestCase->run()
+#43 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestSuite->run()
+#44 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/Framework/TestSuite.php(374): PHPUnit\Framework\TestSuite->run()
+#45 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/TextUI/TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+#46 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/src/TextUI/Application.php(229): PHPUnit\TextUI\TestRunner->run()
+#47 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/phpunit/phpunit/phpunit(104): PHPUnit\TextUI\Application->run()
+#48 /home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/bin/phpunit(122): include('...')
+#49 {main}
+
+----------------------------------------------------------------------------------
+
+SQLSTATE[23000]: Integrity constraint violation: 19 UNIQUE constraint failed: users.email (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("name", "email", "password", "status", "updated_at", "created_at") values (Alice Smith, existing@example.com, $2y$04$vFYAdXaUAzBncL6iUD.t4.1Nr.zkJQKYgtV1qTUb.Skf88sgz/T/K, 1, 2026-05-28 18:27:04, 2026-05-28 18:27:04))
+
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponseAssert.php:45
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/vendor/laravel/framework/src/Illuminate/Testing/TestResponse.php:176
+/home/hoanghoi/www/base/laravel-13-nextjs-16/backend/tests/Feature/User/Auth/UserRegisterTest.php:208
+
+[37;41mFAILURES![0m
+[37;41mTests: 7[0m[37;41m, Assertions: 34[0m[37;41m, Failures: 6[0m[37;41m.[0m

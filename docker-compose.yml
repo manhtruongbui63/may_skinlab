@@ -1,0 +1,167 @@
+services:
+  # Nginx Web Server
+  nginx:
+    image: nginx:stable-alpine
+    container_name: ${CONTAINER_PREFIX}-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - app
+    networks:
+      - bks-network
+
+  # PHP-FPM Application Server (PHP 8.4)
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    container_name: ${CONTAINER_PREFIX}-app
+    user: "www-data"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
+    # No env_file here: Laravel reads its own backend/.env (and .env.testing
+    # under APP_ENV=testing). Injecting .env into the OS environment would land
+    # in $_SERVER and override Laravel's per-environment files, breaking tests.
+    depends_on:
+      - mysql
+      - mysql-test
+      - redis
+      - mailhog
+    networks:
+      - bks-network
+
+  # Node.js 24 Development Server (Next.js)
+  node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      args:
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    container_name: ${CONTAINER_PREFIX}-node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/var/www/html
+    env_file:
+      - .env
+    command: sh -c "pnpm install && pnpm run dev"
+    networks:
+      - bks-network
+
+  # MySQL 8.0 Database
+  mysql:
+    image: mysql:8.0
+    container_name: ${CONTAINER_PREFIX}-mysql
+    ports:
+      # Bind to loopback only so the DB is not reachable from the LAN.
+      - "127.0.0.1:33069:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Dedicated root password, distinct from the application DB user password.
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bks-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME}", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # MySQL 8.0 Database (Testing only)
+  # Dedicated, isolated DB for the test suite so RefreshDatabase never wipes
+  # the development data in `mysql`. Auto-created on `docker compose up`.
+  mysql-test:
+    image: mysql:8.0
+    container_name: ${CONTAINER_PREFIX}-mysql-test
+    ports:
+      # Separate loopback port from the dev DB (33069) for optional debugging.
+      - "127.0.0.1:33070:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}_test
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - mysql_test_data:/var/lib/mysql
+    networks:
+      - bks-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME}", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis (Cache, Session, Queue)
+  redis:
+    image: redis:7-alpine
+    container_name: ${CONTAINER_PREFIX}-redis
+    ports:
+      - "63790:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - bks-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # MailHog (SMTP catcher for local mail testing)
+  # The app reaches SMTP at bks-mailhog:1025 over the docker network (no host
+  # bind needed). Web UI exposed on 8026 — open http://localhost:8026.
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${CONTAINER_PREFIX}-mailhog
+    ports:
+      - "8026:8025"
+    networks:
+      - bks-network
+
+  # Supervisor (Laravel Queue Workers)
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        USER_ID: ${UID:-1000}
+        GROUP_ID: ${GID:-1000}
+    container_name: ${CONTAINER_PREFIX}-queue
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:ro
+    # No env_file: see the `app` service — Laravel reads backend/.env directly.
+    command: supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    networks:
+      - bks-network
+
+networks:
+  bks-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  mysql_test_data:
+    driver: local
+  redis_data:
+    driver: local

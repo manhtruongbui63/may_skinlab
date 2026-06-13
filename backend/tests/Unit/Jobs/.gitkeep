@@ -1,0 +1,8 @@
+# Laravel Jobs Unit Tests
+# Place isolated unit tests for individual Laravel Jobs and Background Services here.
+#
+# Rule: Test the isolated Job handle() method or execution logic with mock dependencies and precise inputs.
+# Example:
+#   $job = new MyJob($dataId);
+#   $job->handle($mockDependency);
+#   $this->assertDatabaseHas('my_table', [...]);

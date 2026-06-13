@@ -1,0 +1,26 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "no_unused_imports": true,
+        "blank_line_after_namespace": true,
+        "no_closing_tag": true,
+        "single_quote": true,
+        "array_syntax": {
+            "syntax": "short"
+        },
+        "trailing_comma_in_multiline": {
+            "elements": ["arrays", "arguments", "parameters"]
+        },
+        "visibility_required": {
+            "elements": ["method", "property"]
+        },
+        "binary_operator_spaces": {
+            "default": "single_space"
+        }
+    },
+    "exclude": [
+        "storage",
+        "bootstrap/cache",
+        "vendor"
+    ]
+}

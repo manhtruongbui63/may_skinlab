@@ -1,0 +1,63 @@
+image: node:25.8.1
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+
+variables:
+  PNPM_HOME: ".pnpm-store"
+
+cache:
+  key:
+    files:
+      - pnpm-lock.yaml
+  paths:
+    - .pnpm-store
+
+before_script:
+  # Install fixed pnpm version
+  - npm install -g pnpm@10.12.1
+
+  # Debug versions
+  - node -v
+  - pnpm -v
+
+  # Configure pnpm store
+  - pnpm config set store-dir $PNPM_HOME
+
+  # Install dependencies
+  - pnpm install --frozen-lockfile
+
+lint:
+  stage: lint
+  script:
+    - pnpm run lint
+
+test:
+  stage: test
+  script:
+    - pnpm run test:run
+  dependencies:
+    - lint
+
+build:
+  stage: build
+  script:
+    - pnpm run build
+  artifacts:
+    paths:
+      - .next/
+      - public/
+    expire_in: 1 week
+  dependencies:
+    - test
+
+# deploy_production:
+#   stage: deploy
+#   script:
+#     - echo "Add your deployment script here"
+#   only:
+#     - main
+#   when: manual

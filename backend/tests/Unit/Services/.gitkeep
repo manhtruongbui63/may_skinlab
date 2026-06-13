@@ -1,0 +1,12 @@
+# Unit Tests for Complex Services
+#
+# Rule: Unit tests must focus STRICTLY on complex business logic, calculations, state machines,
+# or sophisticated data transformations within Services.
+#
+# Simple CRUD or direct Eloquent model/repository operations do not need individual Unit tests;
+# they should be covered via API Feature Tests (end-to-end integration).
+#
+# Example Guidelines:
+# 1. Mock external dependencies (Repositories, External APIs, Mailers) using Mockery or Laravel's built-in Mocks.
+# 2. Test edge cases, boundaries, and intricate conditional branches within the service logic.
+# 3. Ensure tests execute extremely fast by avoiding direct database/network hits unless absolutely necessary.

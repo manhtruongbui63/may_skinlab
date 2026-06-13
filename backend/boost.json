@@ -1,0 +1,17 @@
+{
+    "agents": [
+        "claude_code",
+        "opencode"
+    ],
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-permission"
+    ],
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "laravel-permission-development"
+    ]
+}

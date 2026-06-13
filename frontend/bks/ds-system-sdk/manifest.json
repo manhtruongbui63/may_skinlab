@@ -1,0 +1,7 @@
+{
+  "name": "@bks/ds-system-sdk",
+  "version": "0.1.18",
+  "generatedAt": "2026-05-28T06:22:27.923Z",
+  "targetDir": "bks/ds-system-sdk",
+  "note": "Plain TypeScript/CSS source. Run `pnpm exec ds-vendor` after installing @bks/ds-system-sdk."
+}

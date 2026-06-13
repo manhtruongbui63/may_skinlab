@@ -1,0 +1,8 @@
+# Console Commands Feature Tests
+# Place feature/integration tests for Artisan Commands here.
+#
+# Rule: Use $this->artisan('command:signature') to test interactive inputs, outputs, and database side effects.
+# Example:
+#   $this->artisan('system:format')
+#        ->expectsOutput('Formatting code...')
+#        ->assertExitCode(0);
