@@ -219,4 +219,85 @@ class CustomerUpdateTest extends TestCase
             'status' => CustomerStatusEnum::INACTIVE->value,
         ]);
     }
+
+    /**
+     * Test Case 10: Update resolves address automatically when components change.
+     */
+    public function test_update_resolves_address_automatically(): void
+    {
+        // Arrange
+        $province = \App\Models\Province::create(['name' => 'Thành phố Đà Nẵng', 'code' => '48']);
+        $ward = \App\Models\Ward::create(['province_id' => $province->id, 'name' => 'Phường Hải Châu I', 'code' => '003']);
+        $customer = Customer::factory()->create([
+            'house_number' => 'Số 5',
+            'province_id' => null,
+            'ward_id' => null,
+            'address' => 'Old Address',
+            'is_address_manually_edited' => false,
+        ]);
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->patchJson("/api/customers/{$customer->id}", [
+                'province_id' => $province->id,
+                'ward_id' => $ward->id,
+            ]);
+
+        // Assert
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('customers', [
+            'id' => $customer->id,
+            'address' => 'Số 5, Phường Hải Châu I, Thành phố Đà Nẵng',
+        ]);
+    }
+
+    /**
+     * Test Case 11: Update preserves manually edited address.
+     */
+    public function test_update_preserves_manually_edited_address(): void
+    {
+        // Arrange
+        $customer = Customer::factory()->create([
+            'address' => 'Old Address',
+            'is_address_manually_edited' => false,
+        ]);
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->patchJson("/api/customers/{$customer->id}", [
+                'is_address_manually_edited' => true,
+                'address' => 'Địa chỉ sửa tay mới',
+            ]);
+
+        // Assert
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('customers', [
+            'id' => $customer->id,
+            'address' => 'Địa chỉ sửa tay mới',
+            'is_address_manually_edited' => true,
+        ]);
+    }
+
+    /**
+     * Test Case 12: Cross field validation on update.
+     */
+    public function test_update_fails_when_ward_does_not_belong_to_province(): void
+    {
+        // Arrange
+        $province1 = \App\Models\Province::create(['name' => 'Tỉnh X', 'code' => '04']);
+        $province2 = \App\Models\Province::create(['name' => 'Tỉnh Y', 'code' => '05']);
+        $ward = \App\Models\Ward::create(['province_id' => $province1->id, 'name' => 'Phường thuộc Tỉnh X', 'code' => '004']);
+        $customer = Customer::factory()->create(['province_id' => $province1->id, 'ward_id' => $ward->id]);
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->patchJson("/api/customers/{$customer->id}", [
+                'province_id' => $province2->id, // Tỉnh Y, but ward is still Tỉnh X
+            ]);
+
+        // Assert
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['ward_id'])
+            ->assertJsonPath('errors.ward_id.0', trans('validation.ward_not_in_province'));
+    }
 }

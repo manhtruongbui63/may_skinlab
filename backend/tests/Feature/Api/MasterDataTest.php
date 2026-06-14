@@ -184,4 +184,43 @@ class MasterDataTest extends TestCase
             ])
             ->assertJsonCount(2, 'data.customer_statuses');
     }
+
+    public function test_can_get_provinces(): void
+    {
+        $response = $this->getJson('/api/master-data?resources[provinces]={}');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'provinces' => [
+                        '*' => ['id', 'name'],
+                    ],
+                ],
+            ]);
+    }
+
+    public function test_can_get_wards_filtered_by_province(): void
+    {
+        // Gửi không có params
+        $response = $this->getJson('/api/master-data?resources[wards]={}');
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'wards' => [
+                        '*' => ['id', 'province_id', 'name'],
+                    ],
+                ],
+            ]);
+
+        // Gửi có province_id param
+        $response2 = $this->getJson('/api/master-data?resources[wards]={"province_id":1}');
+        $response2->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'wards' => [
+                        '*' => ['id', 'province_id', 'name'],
+                    ],
+                ],
+            ]);
+    }
 }

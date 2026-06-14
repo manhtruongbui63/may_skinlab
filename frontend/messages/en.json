@@ -185,13 +185,18 @@
       "tokenRequired": "This reset link is missing required information."
     }
   },
+
   "customers": {
     "title": "Customers",
     "createButton": "Add customer",
     "errors": {
       "fullName_required": "Full name is required.",
+      "gender_required": "Gender is required.",
+      "phone_required": "Phone number is required.",
       "phone_invalid": "Invalid phone number.",
-      "birthDate_invalid": "Invalid birth date."
+      "birthDate_required": "Birth date is required.",
+      "birthDate_invalid": "Invalid birth date.",
+      "ward_required": "Ward is required when Province/City is selected."
     },
     "toasts": {
       "createSuccess": "Customer created successfully.",
@@ -201,6 +206,7 @@
     "labels": {
       "fullName": "Full name",
       "phone": "Phone",
+      "phoneSecondary": "Secondary Phone",
       "birthDate": "Birth date",
       "age": "Age",
       "gender": "Gender",
@@ -226,8 +232,14 @@
       "paidAmount": "Paid Amount",
       "emptyVisits": "No visit history records",
       "emptyPlans": "No treatment plans found",
-      "emptyInvoices": "No invoices found"
-
+      "emptyInvoices": "No invoices found",
+      "code": "Patient Code",
+      "houseNumber": "House number, street",
+      "province": "Province / City",
+      "ward": "Ward / District",
+      "avatar": "Avatar",
+      "avatarDescription": "Supports PNG, JPG, GIF or WebP",
+      "createdAt": "Created Date"
     },
     "placeholders": {
       "search": "Search by name or phone...",
@@ -235,7 +247,16 @@
       "source": "All sources",
       "status": "All statuses",
       "birthDate": "e.g. 1990-05-15",
-      "address": "Enter address..."
+      "address": "Enter address...",
+      "code": "BNxxxxxx (Auto-generated)",
+      "phoneSecondary": "Enter secondary phone number...",
+      "houseNumber": "Enter house number, street...",
+      "province": "Select province/city...",
+      "ward": "Select ward/district...",
+      "addressAutoBtn": "Auto-generate Address",
+      "noProvince": "No provinces available",
+      "noWard": "No wards available",
+      "wardDisabled": "Select province/city first"
     },
     "filters": {
       "reset": "Reset"
@@ -284,6 +305,7 @@
       "cancel": "Cancel"
     }
   },
+
   "appointments": {
     "title": "Appointment Management",
     "createButton": "New Appointment",

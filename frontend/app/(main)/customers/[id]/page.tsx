@@ -25,6 +25,7 @@ import {
   InvoicesTab,
   CustomerFormModal,
   useCustomerMutations,
+  type CustomerFormInput,
 } from '@/features/customers'
 
 type CustomerDetailPageProps = {
@@ -67,7 +68,7 @@ export default function CustomerDetailPage({ params }: CustomerDetailPageProps) 
     notFound()
   }
 
-  const handleFormSubmit = async (formData: any) => {
+  const handleFormSubmit = async (formData: CustomerFormInput) => {
     await updateMutation.mutateAsync({
       id,
       data: formData,

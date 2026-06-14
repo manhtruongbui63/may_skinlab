@@ -33,7 +33,7 @@ class IndexCustomerRequest extends FormRequest
     {
         return [
             'search' => ['nullable', 'string', 'max:100'],
-            'gender' => ['nullable', 'integer', 'in:' . implode(',', GenderEnum::values())],
+            'province_id' => ['nullable', 'integer', 'exists:provinces,id'],
             'source' => ['nullable', 'integer', 'in:' . implode(',', CustomerSourceEnum::values())],
             'status' => ['nullable', 'integer', 'in:' . implode(',', CustomerStatusEnum::values())],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],

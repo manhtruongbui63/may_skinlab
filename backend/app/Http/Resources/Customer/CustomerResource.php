@@ -22,14 +22,28 @@ class CustomerResource extends JsonResource
     {
         return [
             'id' => $this->resource->id,
+            'code' => $this->resource->code,
             'full_name' => $this->resource->full_name,
             'phone' => $this->resource->phone,
+            'phone_secondary' => $this->resource->phone_secondary,
             'birth_date' => $this->resource->birth_date?->format('Y-m-d'),
+            'age' => $this->resource->age,
             'gender' => $this->resource->gender ? [
                 'value' => $this->resource->gender->value,
                 'label' => $this->resource->gender->label(),
             ] : null,
+            'house_number' => $this->resource->house_number,
+            'province' => $this->resource->province ? [
+                'id' => $this->resource->province->id,
+                'name' => $this->resource->province->name,
+            ] : null,
+            'ward' => $this->resource->ward ? [
+                'id' => $this->resource->ward->id,
+                'name' => $this->resource->ward->name,
+            ] : null,
             'address' => $this->resource->address,
+            'is_address_manually_edited' => $this->resource->is_address_manually_edited,
+            'avatar_path' => $this->resource->avatar_path,
             'source' => [
                 'value' => $this->resource->source->value,
                 'label' => $this->resource->source->label(),

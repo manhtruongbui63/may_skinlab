@@ -185,13 +185,18 @@
     "systemName": "エンタープライズ管理システム",
     "systemDescription": "業務プロセスを最適化し、組織のパフォーマンスを向上させる包括的なソリューション。"
   },
+
   "customers": {
     "title": "顧客",
     "createButton": "顧客を追加",
     "errors": {
       "fullName_required": "氏名は必須です。",
+      "gender_required": "性別は必須です。",
+      "phone_required": "電話番号は必須です。",
       "phone_invalid": "電話番号が無効です。",
-      "birthDate_invalid": "生年月日が無効です。"
+      "birthDate_required": "生年月日は必須です。",
+      "birthDate_invalid": "生年月日が無効です。",
+      "ward_required": "都道府県を選択した場合は区町村が必須です。"
     },
     "toasts": {
       "createSuccess": "顧客が正常に作成されました。",
@@ -201,6 +206,7 @@
     "labels": {
       "fullName": "氏名",
       "phone": "電話番号",
+      "phoneSecondary": "副電話番号",
       "birthDate": "生年月日",
       "age": "年齢",
       "gender": "性別",
@@ -226,8 +232,14 @@
       "paidAmount": "支払済金額",
       "emptyVisits": "来院履歴がありません",
       "emptyPlans": "治療計画が見つかりません",
-      "emptyInvoices": "請求書が見つかりません"
-
+      "emptyInvoices": "請求書が見つかりません",
+      "code": "患者コード",
+      "houseNumber": "番地・通り名",
+      "province": "都道府県",
+      "ward": "市区町村",
+      "avatar": "プロフィール画像",
+      "avatarDescription": "PNG, JPG, GIF または WebP 形式をサポート",
+      "createdAt": "作成日"
     },
     "placeholders": {
       "search": "氏名または電話番号で検索...",
@@ -235,7 +247,16 @@
       "source": "全てのソース",
       "status": "全てのステータス",
       "birthDate": "例: 1990-05-15",
-      "address": "住所を入力..."
+      "address": "住所を入力...",
+      "code": "BNxxxxxx (自動生成)",
+      "phoneSecondary": "副電話番号を入力...",
+      "houseNumber": "番地・通り名を入力...",
+      "province": "都道府県を選択...",
+      "ward": "市区町村を選択...",
+      "addressAutoBtn": "住所の自動生成",
+      "noProvince": "利用可能な都道府県がありません",
+      "noWard": "利用可能な市区町村がありません",
+      "wardDisabled": "先に都道府県を選択してください"
     },
     "filters": {
       "reset": "リセット"
@@ -284,6 +305,7 @@
       "cancel": "キャンセル"
     }
   },
+
   "appointments": {
     "title": "予約管理",
     "createButton": "新規予約",

@@ -3,7 +3,7 @@ import type { CustomerFilters } from '../types'
 
 export const customerListQuerySchema = z.object({
   q: z.string().trim().max(100).optional(),
-  gender: z.coerce.number().int().min(1).max(3).optional(),
+  provinceId: z.coerce.number().int().min(1).optional(),
   source: z.coerce.number().int().min(1).max(5).optional(),
   status: z.coerce.number().int().min(0).max(1).optional(),
   page: z.coerce.number().int().min(1).default(1),
@@ -11,7 +11,7 @@ export const customerListQuerySchema = z.object({
     .number()
     .int()
     .refine((v) => [10, 20, 50, 100].includes(v))
-    .default(20),
+    .default(10),
 })
 
 export type CustomerListQuery = z.infer<typeof customerListQuerySchema>
@@ -34,12 +34,12 @@ export function serializeCustomerListQuery(query: CustomerListQuery): URLSearchP
   const q = query.q?.trim()
   if (q) params.set('q', q)
 
-  if (query.gender !== undefined) params.set('gender', String(query.gender))
+  if (query.provinceId !== undefined) params.set('provinceId', String(query.provinceId))
   if (query.source !== undefined) params.set('source', String(query.source))
   if (query.status !== undefined) params.set('status', String(query.status))
 
   if (query.page > 1) params.set('page', String(query.page))
-  if (query.perPage !== 20) params.set('perPage', String(query.perPage))
+  if (query.perPage !== 10) params.set('perPage', String(query.perPage))
 
   return params
 }
@@ -47,7 +47,7 @@ export function serializeCustomerListQuery(query: CustomerListQuery): URLSearchP
 export function queryToCustomerFilters(query: CustomerListQuery): CustomerFilters {
   return {
     search: query.q,
-    gender: query.gender,
+    provinceId: query.provinceId,
     source: query.source,
     status: query.status,
     page: query.page,
@@ -60,7 +60,7 @@ export function customerFiltersToQuery(
 ): CustomerListQuery {
   return {
     q: filters.search,
-    gender: filters.gender,
+    provinceId: filters.provinceId,
     source: filters.source,
     status: filters.status,
     page: filters.page,

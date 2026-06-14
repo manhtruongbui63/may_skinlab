@@ -3,11 +3,19 @@ import { BaseMock } from '@/infra/mocks/base-mock'
 
 interface MockCustomer {
   id: number
+  code: string
   full_name: string
   phone: string
+  phone_secondary: string | null
   birth_date: string | null
+  age: number | null
   gender: { value: number; label: string } | null
+  house_number: string | null
+  province: { id: number; name: string } | null
+  ward: { id: number; province_id: number; name: string } | null
   address: string | null
+  is_address_manually_edited: boolean
+  avatar_path: string | null
   source: { value: number; label: string } | null
   status: { value: number; label: string }
   outstanding_amount: number
@@ -18,11 +26,19 @@ interface MockCustomer {
 const mockCustomers: MockCustomer[] = [
   {
     id: 1,
+    code: 'BN000001',
     full_name: 'Nguyễn Văn A',
     phone: '0987654321',
+    phone_secondary: '0901234567',
     birth_date: '1990-05-15',
+    age: 36,
     gender: { value: 1, label: 'Nam' },
-    address: '123 Đường ABC, Quận 1',
+    house_number: 'Số 10',
+    province: { id: 1, name: 'Thành phố Hà Nội' },
+    ward: { id: 1, province_id: 1, name: 'Phường Dịch Vọng' },
+    address: 'Số 10, Phường Dịch Vọng, Thành phố Hà Nội',
+    is_address_manually_edited: false,
+    avatar_path: null,
     source: { value: 1, label: 'Facebook' },
     status: { value: 1, label: 'Active' },
     outstanding_amount: 1500000,
@@ -31,11 +47,19 @@ const mockCustomers: MockCustomer[] = [
   },
   {
     id: 2,
+    code: 'BN000002',
     full_name: 'Trần Thị B',
     phone: '0912345678',
+    phone_secondary: null,
     birth_date: '1995-10-20',
+    age: 31,
     gender: { value: 2, label: 'Nữ' },
-    address: '456 Đường XYZ, Quận 3',
+    house_number: '456 Đường XYZ',
+    province: { id: 2, name: 'Thành phố Hồ Chí Minh' },
+    ward: { id: 3, province_id: 2, name: 'Phường Bến Nghé' },
+    address: '456 Đường XYZ, Phường Bến Nghé, Thành phố Hồ Chí Minh',
+    is_address_manually_edited: false,
+    avatar_path: null,
     source: { value: 2, label: 'Google' },
     status: { value: 1, label: 'Active' },
     outstanding_amount: 0,
@@ -44,11 +68,19 @@ const mockCustomers: MockCustomer[] = [
   },
   {
     id: 3,
+    code: 'BN000003',
     full_name: 'Lê Văn C',
     phone: '0909090909',
+    phone_secondary: null,
     birth_date: '1988-02-28',
+    age: 38,
     gender: { value: 1, label: 'Nam' },
-    address: '789 Đường LMN, Bình Thạnh',
+    house_number: '789 Đường LMN',
+    province: null,
+    ward: null,
+    address: '789 Đường LMN',
+    is_address_manually_edited: true,
+    avatar_path: null,
     source: { value: 3, label: 'Website' },
     status: { value: 0, label: 'Inactive' },
     outstanding_amount: 500000,
@@ -145,20 +177,49 @@ const mockInvoices = [
   }
 ]
 
+// Mock databases for Master Data
+const mockProvinces = [
+  { id: 1, name: 'Thành phố Hà Nội' },
+  { id: 2, name: 'Thành phố Hồ Chí Minh' },
+]
+
+const mockWards = [
+  { id: 1, province_id: 1, name: 'Phường Dịch Vọng' },
+  { id: 2, province_id: 1, name: 'Phường Dịch Vọng Hậu' },
+  { id: 3, province_id: 2, name: 'Phường Bến Nghé' },
+  { id: 4, province_id: 2, name: 'Phường Bến Thành' },
+]
+
 export class CustomerMock extends BaseMock {
   public getHandlers(): HttpHandler[] {
     return [
+      // POST /api/upload-image
+      http.post('*/api/upload-image', async () => {
+        await delay(200)
+        return HttpResponse.json({
+          success: true,
+          message: 'Operation successful',
+          errors: null,
+          data: {
+            url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200',
+            thumb: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100&h=100',
+            type: 'avatar',
+            id: Math.floor(Math.random() * 1000)
+          }
+        })
+      }),
+
       // GET /api/customers
       http.get('*/api/customers', async ({ request }) => {
         await delay(200)
 
         const url = new URL(request.url)
         const search = url.searchParams.get('search')?.toLowerCase()
-        const gender = url.searchParams.get('gender')
+        const provinceId = url.searchParams.get('province_id')
         const source = url.searchParams.get('source')
         const status = url.searchParams.get('status')
         const page = parseInt(url.searchParams.get('page') || '1', 10)
-        const perPage = parseInt(url.searchParams.get('per_page') || '20', 10)
+        const perPage = parseInt(url.searchParams.get('per_page') || '10', 10)
 
         let filtered = [...mockCustomers]
 
@@ -170,9 +231,9 @@ export class CustomerMock extends BaseMock {
           )
         }
 
-        if (gender) {
-          const genderVal = parseInt(gender, 10)
-          filtered = filtered.filter((c) => c.gender?.value === genderVal)
+        if (provinceId) {
+          const provinceIdVal = parseInt(provinceId, 10)
+          filtered = filtered.filter((c) => c.province?.id === provinceIdVal)
         }
 
         if (source) {
@@ -237,9 +298,15 @@ export class CustomerMock extends BaseMock {
         const body = (await request.json()) as {
           full_name?: string
           phone?: string
+          phone_secondary?: string
           birth_date?: string
           gender?: number
+          house_number?: string
+          province_id?: number
+          ward_id?: number
           address?: string
+          is_address_manually_edited?: boolean
+          avatar_path?: string
           source?: number
           status?: number
         }
@@ -251,6 +318,7 @@ export class CustomerMock extends BaseMock {
         if (!body.phone) {
           errors.phone = ['The phone field is required.']
         } else if (!/^\+?[0-9]{7,15}$/.test(body.phone)) {
+          // General fallback check in mock
           errors.phone = ['The phone format is invalid.']
         } else {
           const isDup = mockCustomers.some((c) => c.phone === body.phone)
@@ -283,13 +351,40 @@ export class CustomerMock extends BaseMock {
         const statusVal = body.status !== undefined ? body.status : 1
         const statusObj = { value: statusVal, label: STATUSES[statusVal as keyof typeof STATUSES] || 'Active' }
 
+        const provinceObj = body.province_id ? mockProvinces.find(p => p.id === body.province_id) || null : null
+        const wardObj = body.ward_id ? mockWards.find(w => w.id === body.ward_id) || null : null
+
+        let finalAddress = body.address || null
+        const isAddressManual = Boolean(body.is_address_manually_edited)
+        if (!isAddressManual && (body.house_number || provinceObj || wardObj)) {
+          const parts = []
+          if (body.house_number) parts.push(body.house_number)
+          if (wardObj) parts.push(wardObj.name)
+          if (provinceObj) parts.push(provinceObj.name)
+          finalAddress = parts.join(', ')
+        }
+
+        let calculatedAge = null
+        if (body.birth_date) {
+          const birthYear = new Date(body.birth_date).getFullYear()
+          calculatedAge = new Date().getFullYear() - birthYear
+        }
+
         const newCustomer: MockCustomer = {
           id: newId,
+          code: `BN${String(newId).padStart(6, '0')}`,
           full_name: body.full_name || '',
           phone: body.phone || '',
+          phone_secondary: body.phone_secondary || null,
           birth_date: body.birth_date || null,
+          age: calculatedAge,
           gender: genderObj,
-          address: body.address || null,
+          house_number: body.house_number || null,
+          province: provinceObj,
+          ward: wardObj,
+          address: finalAddress,
+          is_address_manually_edited: isAddressManual,
+          avatar_path: body.avatar_path || null,
           source: sourceObj,
           status: statusObj,
           outstanding_amount: 0,
@@ -331,9 +426,15 @@ export class CustomerMock extends BaseMock {
         const body = (await request.json()) as {
           full_name?: string
           phone?: string
+          phone_secondary?: string
           birth_date?: string
           gender?: number
+          house_number?: string
+          province_id?: number
+          ward_id?: number
           address?: string
+          is_address_manually_edited?: boolean
+          avatar_path?: string
           source?: number
           status?: number
         }
@@ -382,13 +483,54 @@ export class CustomerMock extends BaseMock {
           ? { value: body.status, label: STATUSES[body.status as keyof typeof STATUSES] || 'Active' }
           : existing.status
 
+        const provinceObj = body.province_id !== undefined
+          ? (body.province_id ? mockProvinces.find(p => p.id === body.province_id) || null : null)
+          : existing.province
+
+        const wardObj = body.ward_id !== undefined
+          ? (body.ward_id ? mockWards.find(w => w.id === body.ward_id) || null : null)
+          : existing.ward
+
+        const isAddressManual = body.is_address_manually_edited !== undefined
+          ? Boolean(body.is_address_manually_edited)
+          : existing.is_address_manually_edited
+
+        let finalAddress = existing.address
+        if (body.address !== undefined && isAddressManual) {
+          finalAddress = body.address || null
+        } else if (!isAddressManual) {
+          const houseNum = body.house_number !== undefined ? body.house_number : existing.house_number
+          const parts = []
+          if (houseNum) parts.push(houseNum)
+          if (wardObj) parts.push(wardObj.name)
+          if (provinceObj) parts.push(provinceObj.name)
+          finalAddress = parts.join(', ')
+        }
+
+        let calculatedAge = existing.age
+        if (body.birth_date !== undefined) {
+          if (body.birth_date) {
+            const birthYear = new Date(body.birth_date).getFullYear()
+            calculatedAge = new Date().getFullYear() - birthYear
+          } else {
+            calculatedAge = null
+          }
+        }
+
         const updatedCustomer: MockCustomer = {
           ...existing,
           full_name: body.full_name !== undefined ? body.full_name : existing.full_name,
           phone: body.phone !== undefined ? body.phone : existing.phone,
+          phone_secondary: body.phone_secondary !== undefined ? (body.phone_secondary || null) : existing.phone_secondary,
           birth_date: body.birth_date !== undefined ? (body.birth_date || null) : existing.birth_date,
+          age: calculatedAge,
           gender: genderObj,
-          address: body.address !== undefined ? (body.address || null) : existing.address,
+          house_number: body.house_number !== undefined ? (body.house_number || null) : existing.house_number,
+          province: provinceObj,
+          ward: wardObj,
+          address: finalAddress,
+          is_address_manually_edited: isAddressManual,
+          avatar_path: body.avatar_path !== undefined ? (body.avatar_path || null) : existing.avatar_path,
           source: sourceObj,
           status: statusObj,
           updated_at: new Date().toISOString(),

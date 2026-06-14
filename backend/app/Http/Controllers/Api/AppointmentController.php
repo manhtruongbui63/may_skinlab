@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\Api\Appointment\CreateAppointmentData;
 use App\DTOs\Api\Appointment\UpdateAppointmentData;
 use App\Factories\ApiFactory;
-use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Appointment\IndexAppointmentRequest;
 use App\Http\Requests\Appointment\StoreAppointmentRequest;
 use App\Http\Requests\Appointment\UpdateAppointmentRequest;

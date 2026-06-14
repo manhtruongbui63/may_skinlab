@@ -6,6 +6,8 @@ use App\Enums\CustomerSourceEnum;
 use App\Enums\CustomerStatusEnum;
 use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
+use App\Models\Province;
+use App\Models\Ward;
 use App\Models\User;
 use App\Services\Base\MasterDataService as BaseMasterDataService;
 
@@ -82,6 +84,18 @@ class MasterDataService extends BaseMasterDataService
             'driver' => self::DRIVER_CONFIG,
             'target' => 'common.countries',
         ],
+
+        // ─── Provinces & Wards ────────────────────────────────
+        'provinces' => [
+            'driver' => self::DRIVER_ELOQUENT,
+            'target' => Province::class,
+            'select' => ['id', 'name'],
+            'order' => ['name', 'asc'],
+        ],
+        'wards' => [
+            'driver' => self::DRIVER_CUSTOM,
+            'target' => 'getWards',
+        ],
     ];
 
     /**
@@ -97,5 +111,25 @@ class MasterDataService extends BaseMasterDataService
             ->orderBy('name', 'asc');
 
         return $this->paginate($resource, $query, 'name');
+    }
+
+    /**
+     * Custom driver: get wards filtered by province_id.
+     *
+     * @param array $resource
+     * @return array
+     */
+    protected function getWards(array $resource): array
+    {
+        $params = $resource['params'] ?? [];
+        $query = Ward::query()
+            ->select(['id', 'province_id', 'name'])
+            ->orderBy('name', 'asc');
+
+        if (!empty($params['province_id'])) {
+            $query->where('province_id', $params['province_id']);
+        }
+
+        return $query->get()->toArray();
     }
 }

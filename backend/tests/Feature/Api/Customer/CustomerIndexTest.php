@@ -120,21 +120,23 @@ class CustomerIndexTest extends TestCase
     }
 
     /**
-     * Test Case 5: List supports filter by gender.
+     * Test Case 5: List supports filter by province.
      */
-    public function test_list_supports_filter_by_gender(): void
+    public function test_list_supports_filter_by_province(): void
     {
         // Arrange
-        Customer::factory()->create(['gender' => GenderEnum::MALE->value]);
-        Customer::factory()->create(['gender' => GenderEnum::FEMALE->value]);
+        $province1 = \Illuminate\Support\Facades\DB::table('provinces')->insertGetId(['name' => 'Province A']);
+        $province2 = \Illuminate\Support\Facades\DB::table('provinces')->insertGetId(['name' => 'Province B']);
+        Customer::factory()->create(['province_id' => $province1]);
+        Customer::factory()->create(['province_id' => $province2]);
 
         // Act
         $response = $this->actingAs($this->user, 'api')
-            ->getJson('/api/customers?gender=' . GenderEnum::MALE->value);
+            ->getJson('/api/customers?province_id=' . $province1);
 
         // Assert
         $response->assertStatus(200)
-            ->assertJsonPath('data.0.gender.value', GenderEnum::MALE->value)
+            ->assertJsonPath('data.0.province.id', $province1)
             ->assertJsonCount(1, 'data');
     }
 

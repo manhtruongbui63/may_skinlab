@@ -11,7 +11,7 @@ final readonly class IndexCustomerData
 {
     public function __construct(
         public ?string $search = null,
-        public ?int $gender = null,
+        public ?int $provinceId = null,
         public ?int $source = null,
         public ?int $status = null,
         public int $page = 1,
@@ -29,7 +29,7 @@ final readonly class IndexCustomerData
     {
         return new self(
             search: $data['search'] ?? null,
-            gender: isset($data['gender']) ? (int) $data['gender'] : null,
+            provinceId: isset($data['province_id']) ? (int) $data['province_id'] : null,
             source: isset($data['source']) ? (int) $data['source'] : null,
             status: isset($data['status']) ? (int) $data['status'] : null,
             page: (int) ($data['page'] ?? 1),

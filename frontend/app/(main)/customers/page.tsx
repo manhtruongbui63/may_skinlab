@@ -32,10 +32,12 @@ import {
   customerFiltersToQuery,
   type Customer,
   type CustomerFilters,
+  type CustomerFormInput,
 } from '@/features/customers'
 
 export default function CustomersPage() {
   const t = useTranslations('customers')
+  const tApiErrors = useTranslations('Api.errors')
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -88,18 +90,7 @@ export default function CustomersPage() {
     setDeleteDialogOpen(true)
   }
 
-  const handleToggleStatus = async (id: number, newStatus: number) => {
-    try {
-      await updateMutation.mutateAsync({
-        id,
-        data: { status: newStatus },
-      })
-    } catch {
-      // Errors are handled by the mutation toast policy
-    }
-  }
-
-  const handleFormSubmit = async (formData: any) => {
+  const handleFormSubmit = async (formData: CustomerFormInput) => {
     if (activeCustomer) {
       await updateMutation.mutateAsync({
         id: activeCustomer.id,
@@ -128,7 +119,7 @@ export default function CustomersPage() {
     // We show at most 5 page buttons or ellipses
     const maxVisible = 5
     let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2))
-    let endPage = Math.min(lastPage, startPage + maxVisible - 1)
+    const endPage = Math.min(lastPage, startPage + maxVisible - 1)
 
     if (endPage - startPage + 1 < maxVisible) {
       startPage = Math.max(1, endPage - maxVisible + 1)
@@ -214,7 +205,7 @@ export default function CustomersPage() {
               <AlertCircle className="size-4" />
               <AlertTitle>{t('table.noResults')}</AlertTitle>
               <AlertDescription className="mt-2 flex items-center justify-between gap-4">
-                <span>{useTranslations('Api.errors')('default')}</span>
+                <span>{tApiErrors('default')}</span>
                 <Button variant="outline" size="sm" onClick={() => refetch()}>
                   Thử lại
                 </Button>
@@ -229,7 +220,6 @@ export default function CustomersPage() {
               onView={handleView}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              onToggleStatus={handleToggleStatus}
             />
 
             {/* Pagination Footer */}

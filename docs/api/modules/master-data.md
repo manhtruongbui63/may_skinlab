@@ -54,6 +54,8 @@ GET /api/master-data?resources[user_statuses]={}&resources[users]={}
 | `active_users` | Eloquent | User đang active | Array `[{id, name, email}]` |
 | `users_paginated` | Custom | User có phân trang + search | Pagination `Object {data, total, ...}` |
 | `countries` | Config | Danh sách quốc gia | Object `{code: name}` |
+| `provinces` | Eloquent | Danh sách tỉnh/thành phố | Array `[{id, name}]` |
+| `wards` | Custom | Danh sách phường/xã theo tỉnh | Array `[{id, province_id, name}]` |
 
 #### 1.1 User Statuses
 Resource `user_statuses` trả về trạng thái từ enum `UserStatus`.
@@ -163,5 +165,38 @@ Resource `countries` trả về danh sách quốc gia từ config.
     "kr": "South Korea",
     "sg": "Singapore"
   }
+}
+```
+
+#### 1.8 Provinces
+Resource `provinces` trả về danh sách tỉnh/thành phố của Việt Nam.
+- **Driver**: Eloquent
+- **Select**: `[id, name]`
+- **Order**: `name ASC`
+- **Input Example**: `GET /api/master-data?resources[provinces]={}`
+- **Response**:
+```json
+{
+  "provinces": [
+    { "id": 1, "name": "Thành phố Hà Nội" },
+    { "id": 2, "name": "Thành phố Hồ Chí Minh" }
+  ]
+}
+```
+
+#### 1.9 Wards
+Resource `wards` trả về danh sách phường/xã của Việt Nam. Có thể lọc theo `province_id`.
+- **Driver**: Custom
+- **Select**: `[id, province_id, name]`
+- **Order**: `name ASC`
+- **Input Example (không lọc)**: `GET /api/master-data?resources[wards]={}`
+- **Input Example (lọc theo province_id = 1)**: `GET /api/master-data?resources[wards]={"province_id":1}`
+- **Response**:
+```json
+{
+  "wards": [
+    { "id": 1, "province_id": 1, "name": "Phường Dịch Vọng" },
+    { "id": 2, "province_id": 1, "name": "Phường Dịch Vọng Hậu" }
+  ]
 }
 ```
