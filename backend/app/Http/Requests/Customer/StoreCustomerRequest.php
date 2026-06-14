@@ -40,12 +40,37 @@ class StoreCustomerRequest extends FormRequest
                 'regex:/^\+?[0-9]{7,15}$/',
                 'unique:customers,phone',
             ],
-            'birth_date' => ['nullable', 'date_format:Y-m-d'],
-            'gender' => ['nullable', 'integer', 'in:' . implode(',', GenderEnum::values())],
-            'address' => ['nullable', 'string', 'max:1000'],
+            'phone_secondary' => ['nullable', 'string', 'max:50', 'regex:/^\+?[0-9]{7,15}$/'],
+            'birth_date' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'gender' => ['required', 'integer', 'in:' . implode(',', GenderEnum::values())],
+            'house_number' => ['nullable', 'string', 'max:255'],
+            'province_id' => ['nullable', 'integer', 'exists:provinces,id'],
+            'ward_id' => ['nullable', 'integer', 'exists:wards,id'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'is_address_manually_edited' => ['nullable', 'boolean'],
+            'avatar_path' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'integer', 'in:' . implode(',', CustomerSourceEnum::values())],
-            'status' => ['nullable', 'integer', 'in:' . implode(',', CustomerStatusEnum::values())],
+            'status' => ['required', 'integer', 'in:' . implode(',', CustomerStatusEnum::values())],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator(\Illuminate\Validation\Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            if ($this->ward_id && $this->province_id) {
+                $exists = \Illuminate\Support\Facades\DB::table('wards')
+                    ->where('id', $this->ward_id)
+                    ->where('province_id', $this->province_id)
+                    ->exists();
+
+                if (!$exists) {
+                    $validator->errors()->add('ward_id', trans('validation.ward_not_in_province'));
+                }
+            }
+        });
     }
 
     /**

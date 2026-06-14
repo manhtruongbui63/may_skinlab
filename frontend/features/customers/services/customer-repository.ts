@@ -21,6 +21,10 @@ import {
   BackendTreatmentPlanListSchema,
   BackendInvoiceListSchema,
   type BackendCustomer,
+  type BackendVisit,
+  type BackendTreatmentPlan,
+  type BackendInvoice,
+  type BackendCustomerDetail,
 } from '../schemas/customer-schema'
 
 type BackendEnvelope<T> = {
@@ -57,16 +61,26 @@ export interface ICustomerRepository {
   treatmentPlans(id: number): Promise<TreatmentPlan[]>
   /** GET /api/customers/{id}/invoices */
   invoices(id: number): Promise<Invoice[]>
+  /** POST /api/upload-image */
+  uploadAvatar(file: File): Promise<{ url: string; thumb: string; id: number }>
 }
 
 export function mapBackendCustomer(item: BackendCustomer): Customer {
   return {
     id: item.id,
+    code: item.code,
     fullName: item.full_name,
     phone: item.phone,
+    phoneSecondary: item.phone_secondary || undefined,
     birthDate: item.birth_date || undefined,
+    age: item.age || undefined,
     gender: item.gender || undefined,
+    houseNumber: item.house_number || undefined,
+    province: item.province || undefined,
+    ward: item.ward || undefined,
     address: item.address || undefined,
+    isAddressManuallyEdited: Boolean(item.is_address_manually_edited),
+    avatarPath: item.avatar_path || undefined,
     source: item.source || undefined,
     status: item.status,
     outstandingAmount: item.outstanding_amount,
@@ -75,7 +89,7 @@ export function mapBackendCustomer(item: BackendCustomer): Customer {
   }
 }
 
-export function mapBackendVisit(item: any): Visit {
+export function mapBackendVisit(item: BackendVisit): Visit {
   return {
     id: item.id,
     visitDate: item.visit_date,
@@ -85,7 +99,7 @@ export function mapBackendVisit(item: any): Visit {
   }
 }
 
-export function mapBackendTreatmentPlan(item: any): TreatmentPlan {
+export function mapBackendTreatmentPlan(item: BackendTreatmentPlan): TreatmentPlan {
   return {
     id: item.id,
     planName: item.plan_name,
@@ -95,7 +109,7 @@ export function mapBackendTreatmentPlan(item: any): TreatmentPlan {
   }
 }
 
-export function mapBackendInvoice(item: any): Invoice {
+export function mapBackendInvoice(item: BackendInvoice): Invoice {
   return {
     id: item.id,
     invoiceNumber: item.invoice_number,
@@ -107,7 +121,7 @@ export function mapBackendInvoice(item: any): Invoice {
   }
 }
 
-export function mapBackendCustomerDetail(item: any): CustomerDetail {
+export function mapBackendCustomerDetail(item: BackendCustomerDetail): CustomerDetail {
   return {
     ...mapBackendCustomer(item),
     visits: item.visits ? item.visits.map(mapBackendVisit) : undefined,
@@ -156,9 +170,15 @@ export class CustomerRepository extends BaseRepository implements ICustomerRepos
     const payload = {
       full_name: data.fullName,
       phone: data.phone,
+      phone_secondary: data.phoneSecondary || null,
       birth_date: data.birthDate || null,
       gender: data.gender ?? null,
+      house_number: data.houseNumber || null,
+      province_id: data.provinceId ?? null,
+      ward_id: data.wardId ?? null,
       address: data.address || null,
+      is_address_manually_edited: data.isAddressManuallyEdited ?? false,
+      avatar_path: data.avatarPath || null,
       source: data.source ?? null,
       status: data.status ?? 1,
     }
@@ -177,9 +197,16 @@ export class CustomerRepository extends BaseRepository implements ICustomerRepos
     const payload: Record<string, unknown> = {}
     if (data.fullName !== undefined) payload.full_name = data.fullName
     if (data.phone !== undefined) payload.phone = data.phone
+    if (data.phoneSecondary !== undefined) payload.phone_secondary = data.phoneSecondary || null
     if (data.birthDate !== undefined) payload.birth_date = data.birthDate || null
     if (data.gender !== undefined) payload.gender = data.gender ?? null
+    if (data.houseNumber !== undefined) payload.house_number = data.houseNumber || null
+    if (data.provinceId !== undefined) payload.province_id = data.provinceId ?? null
+    if (data.wardId !== undefined) payload.ward_id = data.wardId ?? null
     if (data.address !== undefined) payload.address = data.address || null
+    if (data.isAddressManuallyEdited !== undefined)
+      payload.is_address_manually_edited = data.isAddressManuallyEdited
+    if (data.avatarPath !== undefined) payload.avatar_path = data.avatarPath || null
     if (data.source !== undefined) payload.source = data.source ?? null
     if (data.status !== undefined) payload.status = data.status ?? null
 
@@ -194,33 +221,32 @@ export class CustomerRepository extends BaseRepository implements ICustomerRepos
   }
 
   async detail(id: number): Promise<CustomerDetail> {
-    const res = await this.get<BackendEnvelope<any>>(`/api/customers/${id}`)
+    const res = await this.get<BackendEnvelope<BackendCustomerDetail>>(`/api/customers/${id}`)
     this.assertOk(res)
     const parsed = BackendCustomerDetailSchema.parse(res.data)
     return mapBackendCustomerDetail(parsed)
   }
 
   async visits(id: number): Promise<Visit[]> {
-    const res = await this.get<BackendEnvelope<any[]>>(`/api/customers/${id}/visits`)
+    const res = await this.get<BackendEnvelope<BackendVisit[]>>(`/api/customers/${id}/visits`)
     this.assertOk(res)
     const parsed = BackendVisitListSchema.parse(res.data)
     return parsed.map(mapBackendVisit)
   }
 
   async treatmentPlans(id: number): Promise<TreatmentPlan[]> {
-    const res = await this.get<BackendEnvelope<any[]>>(`/api/customers/${id}/treatment-plans`)
+    const res = await this.get<BackendEnvelope<BackendTreatmentPlan[]>>(`/api/customers/${id}/treatment-plans`)
     this.assertOk(res)
     const parsed = BackendTreatmentPlanListSchema.parse(res.data)
     return parsed.map(mapBackendTreatmentPlan)
   }
 
   async invoices(id: number): Promise<Invoice[]> {
-    const res = await this.get<BackendEnvelope<any[]>>(`/api/customers/${id}/invoices`)
+    const res = await this.get<BackendEnvelope<BackendInvoice[]>>(`/api/customers/${id}/invoices`)
     this.assertOk(res)
     const parsed = BackendInvoiceListSchema.parse(res.data)
     return parsed.map(mapBackendInvoice)
   }
-
 
   async delete(id: number): Promise<void> {
     // Avoid name clash with BaseRepository.delete wrapper by calling http.delete directly
@@ -230,10 +256,26 @@ export class CustomerRepository extends BaseRepository implements ICustomerRepos
     this.assertOk(response.data)
   }
 
+  async uploadAvatar(file: File): Promise<{ url: string; thumb: string; id: number }> {
+    const formData = new FormData()
+    formData.append('image', file)
+    formData.append('type', 'avatar')
+
+    const res = await this.post<
+      BackendEnvelope<{ url: string; thumb: string; type: string; id: number }>
+    >('/api/upload-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    this.assertOk(res)
+    return res.data
+  }
+
   private buildListParams(filters: CustomerFilters) {
     const params = new URLSearchParams()
     if (filters.search) params.set('search', filters.search)
-    if (filters.gender !== undefined) params.set('gender', String(filters.gender))
+    if (filters.provinceId !== undefined) params.set('province_id', String(filters.provinceId))
     if (filters.source !== undefined) params.set('source', String(filters.source))
     if (filters.status !== undefined) params.set('status', String(filters.status))
     params.set('page', String(filters.page ?? 1))

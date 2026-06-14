@@ -15,5 +15,7 @@ export * from './components/visits-tab'
 export * from './components/treatment-plans-tab'
 export * from './components/invoices-tab'
 export * from './utils/customer-list-query'
+export * from './services/master-data-repository'
+export * from './hooks/use-master-data'
 
 

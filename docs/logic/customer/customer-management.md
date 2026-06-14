@@ -4,8 +4,11 @@ title: Customer Management — Quản Lý Khách Hàng
 description: Luồng CRUD khách hàng với validation, policy, và tính toán công nợ.
 type: workflow
 priority: high
-version: "1.0.0"
+version: "1.1.0"
 changelog:
+  - version: "1.1.0"
+    date: "2026-06-14"
+    summary: "Register official BR-CUST codes and document location structures."
   - version: "1.0.0"
     date: "2026-06-11"
     summary: "Initial customer management flow doc."
@@ -54,10 +57,19 @@ Yêu cầu auth middleware (`auth:sanctum`). Sử dụng Repository pattern qua 
 ## ENTITIES
 
 Customer → Lưu trữ thông tin cá nhân khách hàng.
+- `code`: Mã bệnh nhân, tự động sinh theo mẫu `BNxxxxxx` tăng dần liên tiếp (ví dụ: `BN000001`, `BN000002`). (**BR-CUST-001**)
 - `status`: CustomerStatusEnum (0: Inactive, 1: Active).
 - `gender`: GenderEnum (1: Nam, 2: Nữ, 3: Khác).
 - `source`: CustomerSourceEnum (1: Facebook, 2: Google, 3: Website, 4: Referral, 5: Walk-in).
+- `phone_secondary`: Số điện thoại phụ.
+- `house_number`: Số nhà.
+- `province_id`: ID của Tỉnh/Thành phố.
+- `ward_id`: ID của Phường/Xã (Phải thuộc về `province_id`).
+- `address`: Địa chỉ đầy đủ (Ghép tự động hoặc tự do). (**BR-CUST-004**)
+- `is_address_manually_edited`: Cờ đánh dấu có tự sửa tay địa chỉ hay không.
+- `avatar_path`: Đường dẫn ảnh đại diện.
 - `outstanding_amount`: Computed field - tổng công nợ từ các hóa đơn chưa thanh toán.
+- `age`: Computed field - tuổi của bệnh nhân (Năm hiện tại - năm sinh từ `birth_date`). (**BR-CUST-003**)
 
 ## FLOW
 
@@ -72,7 +84,7 @@ Customer → Lưu trữ thông tin cá nhân khách hàng.
    - `per_page`: optional, min 1, max 100, default 10.
 3. **DTO Conversion** — `IndexCustomerData::from()` tạo DTO từ validated data.
 4. **Service Layer** — `CustomerService::list()`:
-   - Build query với eager load.
+   - Build query với eager load `province` và `ward`.
    - Apply search filter (LIKE %%) cho `full_name` và `phone`.
    - Apply exact filters cho `gender`, `source`, `status`.
    - Return `LengthAwarePaginator`.
@@ -83,7 +95,7 @@ Customer → Lưu trữ thông tin cá nhân khách hàng.
 1. **Auth Check** — Middleware `auth:sanctum`.
 2. **Policy Check** — `CustomerPolicy::view()` cho phép nếu user đã đăng nhập.
 3. **Route Model Binding** — Laravel tự động resolve `Customer` từ ID.
-4. **Service Layer** — `CustomerService::getDetail()` trả về Customer với eager load.
+4. **Service Layer** — `CustomerService::getDetail()` trả về Customer với eager load `province` và `ward`.
 5. **Response** — `CustomerResource` transform data, bao gồm `outstanding_amount` computed.
 
 ### 3. Create Customer (POST /api/customers)
@@ -92,14 +104,22 @@ Customer → Lưu trữ thông tin cá nhân khách hàng.
 2. **Policy Check** — `CustomerPolicy::create()` cho phép nếu user đã đăng nhập.
 3. **Validation** — `StoreCustomerRequest` validate:
    - `full_name`: required, string, max 255.
-   - `phone`: required, string, max 50, regex `/^\+?[0-9]{7,15}$/`, unique trong `customers` table (**PROPOSED_BR:customer-unique-phone**).
-   - `birth_date`: optional, date format Y-m-d.
-   - `gender`: optional, in [1,2,3].
-   - `address`: optional, string, max 1000.
+   - `phone`: required, string, max 50, regex `/^\+?[0-9]{7,15}$/`, unique trong `customers` table (**BR-CUST-002**).
+   - `phone_secondary`: optional, string, max 50, regex `/^\+?[0-9]{7,15}$/`.
+   - `birth_date`: required, date format Y-m-d.
+   - `gender`: required, in [1,2,3].
+   - `house_number`: optional, string, max 255.
+   - `province_id`: optional, exists in `provinces`.
+   - `ward_id`: optional, exists in `wards` (Phải thuộc về `province_id`).
+   - `address`: optional, string, max 255.
+   - `is_address_manually_edited`: optional, boolean.
+   - `avatar_path`: optional, string, max 255.
    - `source`: optional, in [1,2,3,4,5].
-   - `status`: optional, in [0,1].
+   - `status`: required, in [0,1].
 4. **DTO Conversion** — `StoreCustomerData::from()` tạo DTO.
 5. **Service Layer** — `CustomerService::create()`:
+   - Giải quyết tự động ghép địa chỉ (**BR-CUST-004**): Nếu `is_address_manually_edited = false` và được truyền Số nhà, Tỉnh/Thành, Phường/Xã, địa chỉ sẽ tự động được ghép theo mẫu `[Số nhà], [Tên Phường/Xã], [Tên Tỉnh/Thành phố]`. Nếu cờ bằng `true`, giữ nguyên giá trị `address` người dùng nhập tay.
+   - Trình khởi tạo Model `boot` tự động sinh mã sequential `code` theo mẫu `BNxxxxxx` không trùng lặp (**BR-CUST-001**).
    - Create new Customer record.
    - Return created Customer.
 6. **Response** — `CustomerResource` với HTTP 201.
@@ -109,10 +129,12 @@ Customer → Lưu trữ thông tin cá nhân khách hàng.
 1. **Auth Check** — Middleware `auth:sanctum`.
 2. **Policy Check** — `CustomerPolicy::update()` cho phép nếu user đã đăng nhập.
 3. **Validation** — `UpdateCustomerRequest` validate (các field là `sometimes`):
-   - `phone`: nếu có, phải unique (bỏ qua record hiện tại) (**PROPOSED_BR:customer-unique-phone**).
+   - `phone`: nếu có, phải unique (bỏ qua record hiện tại) (**BR-CUST-002**).
+   - `ward_id`: nếu có và có thay đổi liên quan đến địa lý, phải thuộc về `province_id`.
 4. **DTO Conversion** — `UpdateCustomerData::from()` tạo DTO.
 5. **Service Layer** — `CustomerService::update()`:
    - Find customer by ID, throw 404 nếu không tìm thấy.
+   - Giải quyết địa chỉ tự động tương tự luồng Create nếu cờ `is_address_manually_edited = false` và có thay đổi địa lý.
    - Update các field được truyền.
    - Return updated Customer.
 6. **Response** — `CustomerResource` với HTTP 200.
@@ -124,20 +146,25 @@ Customer → Lưu trữ thông tin cá nhân khách hàng.
 3. **Route Model Binding** — Laravel resolve `Customer`.
 4. **Service Layer** — `CustomerService::delete()`:
    - Gọi `$customer->delete()` (soft delete).
-5. **Response** — HTTP 204, message "Customer deleted successfully."
+5. **Response** — HTTP 204.
 
 ## RULES
 
-- ALWAYS validate `phone` là unique khi tạo mới (**PROPOSED_BR:customer-unique-phone**).
+- ALWAYS validate `phone` là unique khi tạo mới (**BR-CUST-002**).
 - ALWAYS bỏ qua unique check cho `phone` của record hiện tại khi update.
 - ALWAYS format `gender`, `source`, `status` thành object `{value, label}` trong response.
 - ALWAYS trả về `outstanding_amount` trong detail và list (**PROPOSED_BR:outstanding-calculation**).
 - ALWAYS dùng soft delete cho delete operation.
-- ALWAYS validate `birth_date` format là `Y-m-d` nếu có.
+- ALWAYS validate `birth_date` format là `Y-m-d` và phải trước ngày hôm nay.
+- ALWAYS tự sinh mã sequential `code` dạng `BNxxxxxx` khi tạo khách hàng mới (**BR-CUST-001**).
+- ALWAYS tự động ghép địa chỉ `address` dựa trên Số nhà, Xã/Phường, Tỉnh/Thành phố nếu cờ `is_address_manually_edited` là `false` (**BR-CUST-004**).
+- ALWAYS validate chéo đảm bảo `ward_id` phải thuộc về `province_id`.
+- ALWAYS tính tuổi của khách hàng một cách động bằng công thức `Năm hiện tại - Năm sinh` (**BR-CUST-003**).
 
 ## EDGE_CASES
 
 - **Phone trùng lặp**: Trả về 422 với error message "The phone has already been taken."
+- **Địa phương không hợp lệ**: Trả về 422 nếu `ward_id` và `province_id` không khớp nhau.
 - **Customer không tồn tại**: Trả về 404.
 - **Filter không khớp**: Trả về empty collection (total = 0) với pagination meta.
 - **Invoice chưa implement**: `outstanding_amount` trả về 0.0 (TODO).

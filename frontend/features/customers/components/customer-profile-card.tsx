@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Phone, Calendar, MapPin, User, FileText, Activity } from 'lucide-react'
+import { Phone, Calendar, MapPin, Activity } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
   CardTitle,
   Avatar,
   AvatarFallback,
+  AvatarImage,
   Badge,
 } from '@bks/ds-system-sdk'
 import type { CustomerDetail } from '../types'
@@ -50,13 +51,19 @@ export function CustomerProfileCard({ customer }: CustomerProfileCardProps) {
     <Card className="h-full">
       <CardHeader className="flex flex-row items-center gap-4 pb-2 border-b border-border px-6">
         <Avatar size="lg" className="size-16 ring-2 ring-primary/10">
+          {customer.avatarPath && (
+            <AvatarImage src={customer.avatarPath} alt={customer.fullName} />
+          )}
           <AvatarFallback className="text-lg font-bold bg-primary/10 text-primary">
             {initials}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <CardTitle className="text-xl font-bold truncate">{customer.fullName}</CardTitle>
-          <div className="flex flex-wrap items-center gap-2 mt-1">
+          <div className="text-sm font-semibold text-muted-foreground mt-0.5">
+            {customer.code}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 mt-1.5">
             <Badge variant={customer.status.value === 1 ? 'default' : 'secondary'}>
               {customer.status.label}
             </Badge>
@@ -90,7 +97,7 @@ export function CustomerProfileCard({ customer }: CustomerProfileCardProps) {
 
         {/* Patient Details List */}
         <div className="space-y-4">
-          {/* Phone */}
+          {/* Primary Phone */}
           <div className="flex items-center gap-3 text-sm">
             <Phone className="size-4 text-muted-foreground shrink-0" aria-hidden />
             <span className="font-semibold text-muted-foreground min-w-24">
@@ -101,6 +108,19 @@ export function CustomerProfileCard({ customer }: CustomerProfileCardProps) {
             </span>
           </div>
 
+          {/* Secondary Phone */}
+          {customer.phoneSecondary && (
+            <div className="flex items-center gap-3 text-sm">
+              <Phone className="size-4 text-muted-foreground shrink-0" aria-hidden />
+              <span className="font-semibold text-muted-foreground min-w-24">
+                {t('labels.phoneSecondary')}:
+              </span>
+              <span className="text-foreground font-medium" dir="ltr">
+                {customer.phoneSecondary}
+              </span>
+            </div>
+          )}
+
           {/* Age & Birth Date */}
           <div className="flex items-center gap-3 text-sm">
             <Calendar className="size-4 text-muted-foreground shrink-0" aria-hidden />
@@ -108,7 +128,9 @@ export function CustomerProfileCard({ customer }: CustomerProfileCardProps) {
               {t('labels.birthDate')}:
             </span>
             <span className="text-foreground font-medium">
-              {customer.birthDate ? `${formatDate(customer.birthDate)} (Tuổi: ${calculateAge(customer.birthDate)})` : '—'}
+              {customer.birthDate
+                ? `${formatDate(customer.birthDate)} (Tuổi: ${customer.age ?? calculateAge(customer.birthDate)})`
+                : '—'}
             </span>
           </div>
 
@@ -125,15 +147,28 @@ export function CustomerProfileCard({ customer }: CustomerProfileCardProps) {
             )}
           </div>
 
-          {/* Address */}
+          {/* Detailed Address */}
           <div className="flex items-start gap-3 text-sm">
             <MapPin className="size-4 text-muted-foreground shrink-0 mt-0.5" aria-hidden />
             <span className="font-semibold text-muted-foreground min-w-24">
               {t('labels.address')}:
             </span>
-            <span className="text-foreground font-medium leading-relaxed">
-              {customer.address || '—'}
-            </span>
+            <div className="flex flex-col gap-0.5 text-foreground font-medium leading-relaxed">
+              <span>{customer.address || '—'}</span>
+              {(customer.houseNumber || customer.ward || customer.province) && (
+                <span className="text-xs text-muted-foreground">
+                  (
+                  {[
+                    customer.houseNumber,
+                    customer.ward?.name,
+                    customer.province?.name,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                  )
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>

@@ -16,23 +16,40 @@ class CustomerFactory extends Factory
     /**
      * The model the factory corresponds to.
      *
-     * @var class-string\u003cCustomer\u003e
+     * @var class-string<Customer>
      */
     protected $model = Customer::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array\u003cstring, mixed\u003e
+     * @return array<string, mixed>
      */
     public function definition(): array
     {
+        static $number = null;
+        if ($number === null) {
+            $maxCode = \Illuminate\Support\Facades\DB::table('customers')->max('code');
+            $nextNumber = 1;
+            if ($maxCode && preg_match('/^BN(\d+)$/', $maxCode, $matches)) {
+                $nextNumber = (int)$matches[1] + 1;
+            }
+            $number = $nextNumber;
+        }
+
         return [
+            'code' => 'BN' . str_pad((string)$number++, 6, '0', STR_PAD_LEFT),
             'full_name' => fake()->name(),
             'phone' => fake()->unique()->phoneNumber(),
+            'phone_secondary' => fake()->optional()->phoneNumber(),
             'birth_date' => fake()->optional()->date(),
             'gender' => fake()->optional()->randomElement(GenderEnum::values()),
+            'house_number' => fake()->optional()->buildingNumber(),
+            'province_id' => null,
+            'ward_id' => null,
             'address' => fake()->optional()->address(),
+            'is_address_manually_edited' => false,
+            'avatar_path' => null,
             'source' => CustomerSourceEnum::random(),
             'status' => CustomerStatusEnum::random(),
         ];

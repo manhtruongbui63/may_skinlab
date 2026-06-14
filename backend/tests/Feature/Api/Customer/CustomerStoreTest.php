@@ -240,4 +240,137 @@ class CustomerStoreTest extends TestCase
             'status' => CustomerStatusEnum::ACTIVE->value,
         ]);
     }
+
+    /**
+     * Test Case 11: Auto sequential code generation.
+     */
+    public function test_store_generates_sequential_code(): void
+    {
+        // Act
+        $response1 = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', [
+                'full_name' => 'Customer One',
+                'phone' => '0901111111',
+            ]);
+
+        $response2 = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', [
+                'full_name' => 'Customer Two',
+                'phone' => '0902222222',
+            ]);
+
+        // Assert
+        $response1->assertStatus(201);
+        $response2->assertStatus(201);
+
+        $code1 = $response1->json('data.code');
+        $code2 = $response2->json('data.code');
+
+        $this->assertMatchesRegularExpression('/^BN\d{6}$/', $code1);
+        $this->assertMatchesRegularExpression('/^BN\d{6}$/', $code2);
+
+        $num1 = (int) substr($code1, 2);
+        $num2 = (int) substr($code2, 2);
+
+        $this->assertEquals($num1 + 1, $num2);
+    }
+
+    /**
+     * Test Case 12: Customer age calculation.
+     */
+    public function test_store_calculates_correct_age(): void
+    {
+        // Arrange
+        $payload = $this->validPayload();
+        $payload['birth_date'] = '1995-10-12';
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', $payload);
+
+        // Assert
+        $expectedAge = now()->year - 1995;
+        $response->assertStatus(201)
+            ->assertJsonPath('data.age', $expectedAge);
+    }
+
+    /**
+     * Test Case 13: Auto address resolution when not manually edited.
+     */
+    public function test_store_resolves_address_automatically(): void
+    {
+        // Arrange
+        $province = \App\Models\Province::create(['name' => 'Thành phố Hà Nội', 'code' => '01']);
+        $ward = \App\Models\Ward::create(['province_id' => $province->id, 'name' => 'Phường Dịch Vọng', 'code' => '001']);
+
+        $payload = $this->validPayload();
+        $payload['house_number'] = 'Số 10';
+        $payload['province_id'] = $province->id;
+        $payload['ward_id'] = $ward->id;
+        $payload['is_address_manually_edited'] = false;
+        unset($payload['address']);
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', $payload);
+
+        // Assert
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('customers', [
+            'id' => $response->json('data.id'),
+            'address' => 'Số 10, Phường Dịch Vọng, Thành phố Hà Nội',
+        ]);
+    }
+
+    /**
+     * Test Case 14: Keeps manual address when manual flag is true.
+     */
+    public function test_store_preserves_manually_edited_address(): void
+    {
+        // Arrange
+        $province = \App\Models\Province::create(['name' => 'Thành phố Hà Nội', 'code' => '01']);
+        $ward = \App\Models\Ward::create(['province_id' => $province->id, 'name' => 'Phường Dịch Vọng', 'code' => '001']);
+
+        $payload = $this->validPayload();
+        $payload['house_number'] = 'Số 10';
+        $payload['province_id'] = $province->id;
+        $payload['ward_id'] = $ward->id;
+        $payload['is_address_manually_edited'] = true;
+        $payload['address'] = 'Địa chỉ nhập tay tự do';
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', $payload);
+
+        // Assert
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('customers', [
+            'id' => $response->json('data.id'),
+            'address' => 'Địa chỉ nhập tay tự do',
+        ]);
+    }
+
+    /**
+     * Test Case 15: Cross field validation fails when ward does not belong to province.
+     */
+    public function test_store_fails_when_ward_does_not_belong_to_province(): void
+    {
+        // Arrange
+        $province1 = \App\Models\Province::create(['name' => 'Tỉnh A', 'code' => '02']);
+        $province2 = \App\Models\Province::create(['name' => 'Tỉnh B', 'code' => '03']);
+        $ward = \App\Models\Ward::create(['province_id' => $province1->id, 'name' => 'Phường thuộc Tỉnh A', 'code' => '002']);
+
+        $payload = $this->validPayload();
+        $payload['province_id'] = $province2->id; // Tỉnh B
+        $payload['ward_id'] = $ward->id;    // Phường thuộc Tỉnh A
+
+        // Act
+        $response = $this->actingAs($this->user, 'api')
+            ->postJson('/api/customers', $payload);
+
+        // Assert
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['ward_id'])
+            ->assertJsonPath('errors.ward_id.0', trans('validation.ward_not_in_province'));
+    }
 }

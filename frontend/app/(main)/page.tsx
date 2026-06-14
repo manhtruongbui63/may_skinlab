@@ -1,4 +1,3 @@
-import { getTranslations } from "next-intl/server";
 import { 
   Users, 
   Activity, 
@@ -12,7 +11,6 @@ import {
 } from "lucide-react";
 
 export default async function Home() {
-  const t = await getTranslations("HomePage");
 
   // TODO: Replace mock data with actual API calls
   // Mock stats and activities for visual excellence - replace with real data

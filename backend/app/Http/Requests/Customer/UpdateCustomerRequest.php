@@ -32,7 +32,8 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function rules(): array
     {
-        $customerId = $this->route('customer')?->id;
+        $customer = $this->route('customer');
+        $customerId = $customer instanceof \App\Models\Customer ? $customer->id : $customer;
 
         return [
             'full_name' => ['sometimes', 'string', 'max:255'],
@@ -43,12 +44,40 @@ class UpdateCustomerRequest extends FormRequest
                 'regex:/^\+?[0-9]{7,15}$/',
                 Rule::unique('customers', 'phone')->ignore($customerId),
             ],
-            'birth_date' => ['nullable', 'date_format:Y-m-d'],
-            'gender' => ['nullable', 'integer', 'in:' . implode(',', GenderEnum::values())],
-            'address' => ['nullable', 'string', 'max:1000'],
+            'phone_secondary' => ['nullable', 'string', 'max:50', 'regex:/^\+?[0-9]{7,15}$/'],
+            'birth_date' => ['sometimes', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'gender' => ['sometimes', 'integer', 'in:' . implode(',', GenderEnum::values())],
+            'house_number' => ['nullable', 'string', 'max:255'],
+            'province_id' => ['nullable', 'integer', 'exists:provinces,id'],
+            'ward_id' => ['nullable', 'integer', 'exists:wards,id'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'is_address_manually_edited' => ['nullable', 'boolean'],
+            'avatar_path' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'integer', 'in:' . implode(',', CustomerSourceEnum::values())],
-            'status' => ['nullable', 'integer', 'in:' . implode(',', CustomerStatusEnum::values())],
+            'status' => ['sometimes', 'integer', 'in:' . implode(',', CustomerStatusEnum::values())],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator(\Illuminate\Validation\Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $provinceId = $this->province_id ?? ($this->route('customer') instanceof \App\Models\Customer ? $this->route('customer')->province_id : null);
+            $wardId = $this->ward_id;
+
+            if ($wardId && $provinceId) {
+                $exists = \Illuminate\Support\Facades\DB::table('wards')
+                    ->where('id', $wardId)
+                    ->where('province_id', $provinceId)
+                    ->exists();
+
+                if (!$exists) {
+                    $validator->errors()->add('ward_id', trans('validation.ward_not_in_province'));
+                }
+            }
+        });
     }
 
     /**

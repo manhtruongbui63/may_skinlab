@@ -1,13 +1,28 @@
 export interface Customer {
   id: number
+  code: string
   fullName: string
   phone: string
+  phoneSecondary?: string
   birthDate?: string
+  age?: number
   gender?: {
     value: number
     label: string
   }
+  houseNumber?: string
+  province?: {
+    id: number
+    name: string
+  }
+  ward?: {
+    id: number
+    provinceId: number
+    name: string
+  }
   address?: string
+  isAddressManuallyEdited: boolean
+  avatarPath?: string
   source?: {
     value: number
     label: string
@@ -23,7 +38,7 @@ export interface Customer {
 
 export interface CustomerFilters {
   search?: string
-  gender?: number
+  provinceId?: number
   source?: number
   status?: number
   page: number
@@ -33,9 +48,15 @@ export interface CustomerFilters {
 export interface StoreCustomerInput {
   fullName: string
   phone: string
+  phoneSecondary?: string
   birthDate?: string
   gender?: number
+  houseNumber?: string
+  provinceId?: number
+  wardId?: number
   address?: string
+  isAddressManuallyEdited?: boolean
+  avatarPath?: string
   source?: number
   status?: number
 }
@@ -43,9 +64,15 @@ export interface StoreCustomerInput {
 export interface UpdateCustomerInput {
   fullName?: string
   phone?: string
+  phoneSecondary?: string
   birthDate?: string
   gender?: number
+  houseNumber?: string
+  provinceId?: number
+  wardId?: number
   address?: string
+  isAddressManuallyEdited?: boolean
+  avatarPath?: string
   source?: number
   status?: number
 }

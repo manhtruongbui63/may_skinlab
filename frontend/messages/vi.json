@@ -185,13 +185,18 @@
       "tokenRequired": "Liên kết đặt lại thiếu thông tin bắt buộc."
     }
   },
+
   "customers": {
     "title": "Khách hàng",
     "createButton": "Thêm khách hàng",
     "errors": {
       "fullName_required": "Họ và tên là bắt buộc.",
+      "gender_required": "Giới tính là bắt buộc.",
+      "phone_required": "Số điện thoại là bắt buộc.",
       "phone_invalid": "Số điện thoại không hợp lệ.",
-      "birthDate_invalid": "Ngày sinh không hợp lệ."
+      "birthDate_required": "Ngày sinh là bắt buộc.",
+      "birthDate_invalid": "Ngày sinh không hợp lệ.",
+      "ward_required": "Phường/Xã là bắt buộc khi chọn Tỉnh/Thành."
     },
     "toasts": {
       "createSuccess": "Tạo khách hàng thành công.",
@@ -201,6 +206,7 @@
     "labels": {
       "fullName": "Họ và tên",
       "phone": "Số điện thoại",
+      "phoneSecondary": "Số điện thoại phụ",
       "birthDate": "Ngày sinh",
       "age": "Tuổi",
       "gender": "Giới tính",
@@ -226,8 +232,14 @@
       "paidAmount": "Đã thanh toán",
       "emptyVisits": "Không có lịch sử khám bệnh nào",
       "emptyPlans": "Không có kế hoạch điều trị nào",
-      "emptyInvoices": "Không có hóa đơn nào"
-
+      "emptyInvoices": "Không có hóa đơn nào",
+      "code": "Mã bệnh nhân",
+      "houseNumber": "Số nhà, tên đường",
+      "province": "Tỉnh / Thành phố",
+      "ward": "Phường / Xã",
+      "avatar": "Ảnh đại diện",
+      "avatarDescription": "Hỗ trợ định dạng PNG, JPG, GIF hoặc WebP",
+      "createdAt": "Ngày tạo"
     },
     "placeholders": {
       "search": "Tìm theo tên hoặc số điện thoại...",
@@ -235,7 +247,16 @@
       "source": "Tất cả nguồn",
       "status": "Tất cả trạng thái",
       "birthDate": "VD: 1990-05-15",
-      "address": "Nhập địa chỉ..."
+      "address": "Nhập địa chỉ...",
+      "code": "BNxxxxxx (Tự động phát sinh)",
+      "phoneSecondary": "Nhập số điện thoại phụ...",
+      "houseNumber": "Nhập số nhà, tên đường...",
+      "province": "Chọn tỉnh / thành...",
+      "ward": "Chọn phường / xã...",
+      "addressAutoBtn": "Tạo lại địa chỉ tự động",
+      "noProvince": "Không có tỉnh/thành",
+      "noWard": "Không có phường/xã",
+      "wardDisabled": "Chọn tỉnh/thành trước"
     },
     "filters": {
       "reset": "Đặt lại"
@@ -284,6 +305,7 @@
       "cancel": "Hủy"
     }
   },
+
   "appointments": {
     "title": "Quản lý lịch hẹn",
     "createButton": "Đặt lịch hẹn mới",

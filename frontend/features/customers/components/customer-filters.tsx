@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@bks/ds-system-sdk'
 import type { CustomerFilters } from '../types'
+import { useProvinces } from '../hooks/use-master-data'
 
 type CustomerFiltersProps = {
   filters: CustomerFilters
@@ -22,17 +23,18 @@ type CustomerFiltersProps = {
 
 const DEFAULT_FILTERS: Partial<CustomerFilters> = {
   search: '',
-  gender: undefined,
+  provinceId: undefined,
   source: undefined,
   status: undefined,
 }
 
 function isFiltersActive(filters: CustomerFilters): boolean {
-  return !!(filters.search || filters.gender !== undefined || filters.source !== undefined || filters.status !== undefined)
+  return !!(filters.search || filters.provinceId !== undefined || filters.source !== undefined || filters.status !== undefined)
 }
 
 export function CustomerFiltersBar({ filters, onChange }: CustomerFiltersProps) {
   const t = useTranslations('customers')
+  const { data: provinces = [], isLoading: isProvincesLoading } = useProvinces()
   const hasActiveFilters = isFiltersActive(filters)
   
   const searchInputRef = useRef<HTMLInputElement>(null)
@@ -82,36 +84,41 @@ export function CustomerFiltersBar({ filters, onChange }: CustomerFiltersProps) 
         />
       </InputGroup>
 
-      {/* Gender filter */}
+      {/* Province filter */}
       <Select
-        className="w-full sm:w-40"
-        value={filters.gender !== undefined ? String(filters.gender) : undefined}
+        className="w-full sm:w-48"
+        value={filters.provinceId !== undefined ? String(filters.provinceId) : 'all'}
         onValueChange={(val) =>
-          onChange({ gender: val !== undefined ? Number(val) : undefined, page: 1 })
+          onChange({ provinceId: val !== 'all' ? Number(val) : undefined, page: 1 })
         }
+        disabled={isProvincesLoading}
       >
-        <SelectTrigger id="customer-filter-gender" className="w-full! min-w-0" aria-label={t('labels.gender')}>
-          <SelectValue placeholder={t('placeholders.gender')} />
+        <SelectTrigger id="customer-filter-province" className="w-full! min-w-0" aria-label={t('labels.province')}>
+          <SelectValue placeholder={isProvincesLoading ? 'Đang tải...' : t('placeholders.province')} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="1">{t('genders.1')}</SelectItem>
-          <SelectItem value="2">{t('genders.2')}</SelectItem>
-          <SelectItem value="3">{t('genders.3')}</SelectItem>
+          <SelectItem value="all">{t('placeholders.province')}</SelectItem>
+          {provinces.map((p) => (
+            <SelectItem key={p.id} value={String(p.id)}>
+              {p.name}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
 
       {/* Source filter */}
       <Select
         className="w-full sm:w-44"
-        value={filters.source !== undefined ? String(filters.source) : undefined}
+        value={filters.source !== undefined ? String(filters.source) : 'all'}
         onValueChange={(val) =>
-          onChange({ source: val !== undefined ? Number(val) : undefined, page: 1 })
+          onChange({ source: val !== 'all' ? Number(val) : undefined, page: 1 })
         }
       >
         <SelectTrigger id="customer-filter-source" className="w-full! min-w-0" aria-label={t('labels.source')}>
           <SelectValue placeholder={t('placeholders.source')} />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">{t('placeholders.source')}</SelectItem>
           <SelectItem value="1">{t('sources.1')}</SelectItem>
           <SelectItem value="2">{t('sources.2')}</SelectItem>
           <SelectItem value="3">{t('sources.3')}</SelectItem>
@@ -123,33 +130,33 @@ export function CustomerFiltersBar({ filters, onChange }: CustomerFiltersProps) 
       {/* Status filter */}
       <Select
         className="w-full sm:w-44"
-        value={filters.status !== undefined ? String(filters.status) : undefined}
+        value={filters.status !== undefined ? String(filters.status) : 'all'}
         onValueChange={(val) =>
-          onChange({ status: val !== undefined ? Number(val) : undefined, page: 1 })
+          onChange({ status: val !== 'all' ? Number(val) : undefined, page: 1 })
         }
       >
         <SelectTrigger id="customer-filter-status" className="w-full! min-w-0" aria-label={t('labels.status')}>
           <SelectValue placeholder={t('placeholders.status')} />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">{t('placeholders.status')}</SelectItem>
           <SelectItem value="1">{t('statuses.1')}</SelectItem>
           <SelectItem value="0">{t('statuses.0')}</SelectItem>
         </SelectContent>
       </Select>
 
-      {/* Reset — only visible when any filter is active */}
-      {hasActiveFilters && (
-        <Button
-          id="customer-filter-reset"
-          variant="ghost"
-          tone="destructive"
-          onClick={handleReset}
-          aria-label={t('filters.reset')}
-        >
-          <Trash2 className="mr-1.5 size-4" aria-hidden />
-          {t('filters.reset')}
-        </Button>
-      )}
+      {/* Reset — always visible, disabled if no active filters */}
+      <Button
+        id="customer-filter-reset"
+        variant="ghost"
+        tone="destructive"
+        onClick={handleReset}
+        disabled={!hasActiveFilters}
+        aria-label={t('filters.reset')}
+      >
+        <Trash2 className="mr-1.5 size-4" aria-hidden />
+        {t('filters.reset')}
+      </Button>
     </div>
   )
 }

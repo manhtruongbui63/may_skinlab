@@ -35,6 +35,10 @@ Nguồn chuẩn duy nhất cho mã Business Rule (BR) toàn hệ thống.
 | BR-APPT-003 | module | appointment | State Machine Transitions | active | docs/logic/appointment/appointment-management.md | Chuyển đổi trạng thái của lịch hẹn phải tuân thủ ma trận chuyển đổi hợp lệ. |
 | BR-APPT-004 | module | appointment | Auto Complete on Visit Creation | active | docs/logic/appointment/appointment-management.md | Khi một Visit được tạo thành công gắn với lịch hẹn, trạng thái lịch hẹn tự động chuyển sang COMPLETED. |
 | BR-APPT-005 | module | appointment | Soft Delete Preservation | active | docs/logic/appointment/appointment-management.md | Lịch hẹn khi xóa chỉ được phép soft-delete để lưu lại lịch sử cho hệ thống. |
+| BR-CUST-001 | module | customer | Customer Code Generation | active | docs/logic/customer/customer-management.md | Mã bệnh nhân tự động sinh theo mẫu `BNxxxxxx` tăng dần liên tiếp và duy nhất. |
+| BR-CUST-002 | module | customer | Unique Customer Phone | active | docs/logic/customer/customer-management.md | Số điện thoại chính phải là duy nhất trong hệ thống (bỏ qua bản ghi hiện tại khi update). |
+| BR-CUST-003 | module | customer | Age Dynamic Calculation | active | docs/logic/customer/customer-management.md | Tuổi bệnh nhân được tính toán động bằng: `Năm hiện tại - Năm sinh` (tính từ `birth_date`). |
+| BR-CUST-004 | module | customer | Auto Address Assembly | active | docs/logic/customer/customer-management.md | Địa chỉ được tự động ghép từ Số nhà, Xã/Phường, Tỉnh/Thành phố nếu cờ `is_address_manually_edited` bằng `false`. |
 
 
 ---
