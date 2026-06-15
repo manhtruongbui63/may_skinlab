@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'attributes' => [
+        'registration_type' => 'Registration Type',
+        'appointment_date' => 'Appointment Date',
+        'is_priority' => 'Priority',
+        'clinic_room' => 'Clinic Room',
+        'services' => 'Services',
+        'service_packages' => 'Service Packages',
+        'reason' => 'Reason',
+        'customer' => 'Customer',
+        'appointment' => 'Appointment',
+        'from_date' => 'From Date',
+        'to_date' => 'To Date',
+        'status' => 'Status',
+        'per_page' => 'Per Page',
+        'page' => 'Page',
+    ],
+
+    'errors' => [
+        'registration_type_required' => 'The registration type is required.',
+        'registration_type_invalid' => 'The selected registration type is invalid.',
+        'date_must_be_future' => 'The appointment date must be a date after today.',
+        'date_required_for_scheduled' => 'The appointment date is required for scheduled visits.',
+        'appointment_date_must_be_null' => 'Walk-in visits cannot have an appointment date.',
+        'room_required' => 'The clinic room is required for walk-in visits.',
+        'room_invalid' => 'The selected clinic room is invalid or inactive.',
+        'service_required' => 'At least one service is required for walk-in visits.',
+        'service_invalid' => 'One or more selected services are invalid.',
+        'reason_too_long' => 'The reason must not exceed 500 characters.',
+        'appointment_id_required' => 'The appointment ID is required.',
+        'appointment_not_found' => 'Appointment not found.',
+        'appointment_not_bookable' => 'This appointment cannot be checked in. It may have already been processed or cancelled.',
+        'date_range_same_month' => 'The date range must be within the same month.',
+        'date_no_future' => 'The date cannot be in the future.',
+        'visit_already_completed' => 'This visit has already been completed and cannot be cancelled.',
+        'visit_already_cancelled' => 'This visit has already been cancelled.',
+        'unauthorized_delete' => 'You do not have permission to delete this visit.',
+        'appointment_not_cancellable' => 'This appointment cannot be cancelled. Only booked appointments can be cancelled.',
+    ],
+
+    'visit_created' => 'Visit created successfully.',
+    'visit_updated' => 'Visit updated successfully.',
+    'visit_created_from_appointment' => 'Visit created successfully from appointment.',
+    'visit_cancelled' => 'Visit cancelled successfully.',
+    'appointment_cancelled' => 'Appointment cancelled successfully.',
+];

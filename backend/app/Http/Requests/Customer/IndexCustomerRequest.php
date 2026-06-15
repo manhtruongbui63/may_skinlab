@@ -6,7 +6,6 @@ namespace App\Http\Requests\Customer;
 
 use App\Enums\CustomerSourceEnum;
 use App\Enums\CustomerStatusEnum;
-use App\Enums\GenderEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**

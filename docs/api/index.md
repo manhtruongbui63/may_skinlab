@@ -80,4 +80,6 @@ Hệ thống sử dụng **Laravel Sanctum** để xác thực thông qua API To
 | [Upload](modules/upload.md) | Tải lên hình ảnh (avatar, banner) | Frontend |
 | [Users](modules/users.md) | Quản lý danh sách người dùng hệ thống | Frontend (Quản trị viên) |
 | [Customers](modules/customers.md) | Quản lý danh sách khách hàng (bệnh nhân) | Frontend |
+| [Appointments](modules/appointments.md) | Quản lý lịch hẹn (booking, trạng thái, reschedule) | Frontend |
+| [Visits](modules/visits.md) | Quản lý lượt khám (check-in, hủy, danh sách chờ) | Frontend |
 | [Master Data](modules/master-data.md) | Tra cứu dữ liệu tĩnh (categories, statuses, types, v.v.) | Frontend |

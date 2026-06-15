@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Calendar } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, Stethoscope } from "lucide-react";
 import { MenuItem } from "../types/menu";
 
 export const menuConfig: MenuItem[] = [
@@ -8,6 +8,12 @@ export const menuConfig: MenuItem[] = [
     icon: LayoutDashboard,
     path: "/",
     exact: true,
+  },
+  {
+    id: "reception",
+    label: "menu.reception",
+    icon: Stethoscope,
+    path: "/reception",
   },
   {
     id: "customers",

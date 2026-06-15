@@ -51,3 +51,12 @@ Detailed business logic, workflows, and rules documentation.
 | [index.md](appointment/index.md) | Module BR Index | high |
 | [appointment-management.md](appointment/appointment-management.md) | Appointment CRUD — Quản Lý Lịch Hẹn | high |
 
+---
+
+## Visit Module (`visit/`)
+
+| File | Feature | Priority |
+|---|---|---|
+| [visit-management.md](visit/visit-management.md) | Visit CRUD — Quản Lý Lượt Khám | high |
+
+

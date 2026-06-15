@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'attributes' => [
+        'registration_type' => 'Hình thức đăng ký',
+        'appointment_date' => 'Ngày hẹn',
+        'is_priority' => 'Ưu tiên',
+        'clinic_room' => 'Phòng khám',
+        'services' => 'Dịch vụ',
+        'service_packages' => 'Gói dịch vụ',
+        'reason' => 'Lý do',
+        'customer' => 'Khách hàng',
+        'appointment' => 'Lịch hẹn',
+        'from_date' => 'Từ ngày',
+        'to_date' => 'Đến ngày',
+        'status' => 'Trạng thái',
+        'per_page' => 'Số bản ghi/trang',
+        'page' => 'Trang',
+    ],
+
+    'errors' => [
+        'registration_type_required' => 'Hình thức đăng ký là bắt buộc.',
+        'registration_type_invalid' => 'Hình thức đăng ký không hợp lệ.',
+        'date_must_be_future' => 'Ngày hẹn phải sau ngày hôm nay.',
+        'date_required_for_scheduled' => 'Ngày hẹn là bắt buộc cho lịch đã đặt.',
+        'appointment_date_must_be_null' => 'Khách chờ khám không được có ngày hẹn.',
+        'room_required' => 'Phòng khám là bắt buộc cho khách chờ khám.',
+        'room_invalid' => 'Phòng khám không hợp lệ hoặc không còn hoạt động.',
+        'service_required' => 'Phải chọn ít nhất một dịch vụ cho khách chờ khám.',
+        'service_invalid' => 'Một hoặc nhiều dịch vụ đã chọn không hợp lệ.',
+        'reason_too_long' => 'Lý do không được vượt quá 500 ký tự.',
+        'appointment_id_required' => 'Mã lịch hẹn là bắt buộc.',
+        'appointment_not_found' => 'Không tìm thấy lịch hẹn.',
+        'appointment_not_bookable' => 'Lịch hẹn này không thể tiếp nhận. Có thể đã được xử lý hoặc đã hủy.',
+        'date_range_same_month' => 'Khoảng thời gian phải trong cùng một tháng.',
+        'date_no_future' => 'Ngày không được ở tương lai.',
+        'visit_already_completed' => 'Phiếu khám này đã hoàn thành, không thể hủy.',
+        'visit_already_cancelled' => 'Phiếu khám này đã được hủy.',
+        'unauthorized_delete' => 'Bạn không có quyền xóa phiếu khám này.',
+        'appointment_not_cancellable' => 'Lịch hẹn này không thể hủy. Chỉ có thể hủy lịch đang ở trạng thái đã đặt.',
+    ],
+
+    'visit_created' => 'Tạo phiếu khám thành công.',
+    'visit_updated' => 'Cập nhật phiếu khám thành công.',
+    'visit_created_from_appointment' => 'Tiếp nhận khách từ lịch hẹn thành công.',
+    'visit_cancelled' => 'Hủy phiếu khám thành công.',
+    'appointment_cancelled' => 'Hủy lịch hẹn thành công.',
+];

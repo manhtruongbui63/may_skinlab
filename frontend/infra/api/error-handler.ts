@@ -161,15 +161,19 @@ class AuthHandler extends BaseErrorHandler {
 }
 
 /**
- * Handler for critical error redirects (GET requests only)
+ * Handler for critical error redirects (GET requests only, excluding API calls)
  */
 class RedirectHandler extends BaseErrorHandler {
   public override handle(error: AxiosError): void {
     const status = error.response?.status;
     const method = error.config?.method?.toLowerCase();
+    const url = error.config?.url || '';
     const isGetRequest = method === "get";
+    
+    // Skip API calls - only handle page navigation errors
+    const isApiCall = url.startsWith('/api/') || url.includes('/api/');
 
-    if (isGetRequest && typeof window !== "undefined") {
+    if (isGetRequest && typeof window !== "undefined" && !isApiCall) {
       if (status === 403) {
         window.location.href = "/forbidden";
         return;
@@ -184,20 +188,22 @@ class RedirectHandler extends BaseErrorHandler {
 }
 
 /**
- * Handler for Toasts (Mutations or specific errors)
+ * Handler for Toasts (Mutations, API errors, or specific errors)
  */
 class ToastHandler extends BaseErrorHandler {
   public override handle(error: AxiosError): void {
     const status = error.response?.status || 0;
     const method = error.config?.method?.toLowerCase();
+    const url = error.config?.url || '';
     const isMutation = ["post", "put", "delete", "patch"].includes(method || "");
-    // No response means a transport/network failure (timeout, DNS, server down).
-    // Without this, a failed GET (status 0) would show no feedback at all and
-    // leave the user staring at stale/empty UI.
     const isNetworkError = !error.response;
+    const isApiCall = url.startsWith('/api/') || url.includes('/api/');
 
     if (typeof window !== "undefined") {
-      if (isMutation || isNetworkError || status >= 500 || status === 403 || status === 404) {
+      // Show toast for: mutations, network errors, server errors, auth errors
+      // Also show toast for API 404s (endpoint not found)
+      if (isMutation || isNetworkError || status >= 500 || status === 403 || 
+          (status === 404 && isApiCall)) {
         toast.error(this.getFriendlyMessage(status));
       }
     }

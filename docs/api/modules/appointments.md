@@ -363,3 +363,4 @@ Xóa mềm lịch hẹn. Dữ liệu được giữ lại trong cơ sở dữ li
 | `4` | `COMPLETED` | Đã hoàn thành cuộc khám |
 | `5` | `CANCELLED` | Đã hủy lịch hẹn |
 | `6` | `NO_SHOW` | Không đến hẹn |
+| `7` | `OVERDUE` | Quá hạn (chưa đến sau ngày hẹn) |

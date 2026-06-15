@@ -53,7 +53,8 @@
     "search": "Tìm kiếm"
   },
   "menu": {
-    "dashboard": "Bảng điều khiển"
+    "dashboard": "Bảng điều khiển",
+    "reception": "Tiếp nhận"
   },
   "ChangePassword": {
     "trigger": "Đổi mật khẩu",
@@ -391,6 +392,142 @@
       "description": "Bạn có chắc chắn muốn xóa lịch hẹn này? Thao tác này không thể hoàn tác.",
       "confirm": "Xóa",
       "cancel": "Hủy"
+    }
+  },
+
+  "reception": {
+    "toasts": {
+      "visit_created": "Tạo lượt khám thành công.",
+      "visit_cancelled": "Đã hủy lượt khám.",
+      "visit_deleted": "Đã xóa lượt khám.",
+      "visit_created_from_appointment": "Check-in từ lịch hẹn thành công.",
+      "appointment_cancelled": "Lịch hẹn đã được hủy.",
+      "checkin_success": "Check-in thành công."
+    },
+    "errors": {
+      "registration_type_required": "Loại đăng ký là bắt buộc",
+      "date_must_be_future": "Ngày hẹn phải là ngày trong tương lai",
+      "room_required": "Phòng khám là bắt buộc cho vãng lai",
+      "service_required": "Vui lòng chọn ít nhất một dịch vụ",
+      "reason_too_long": "Lý do không được vượt quá 500 ký tự",
+      "customer_required": "Khách hàng là bắt buộc",
+      "appointment_not_booked": "Lịch hẹn này không thể check-in",
+      "from_date_must_be_before_to_date": "Từ ngày không được lớn hơn đến ngày"
+    },
+    "labels": {
+      "registration_type": "Loại đăng ký",
+      "appointment_date": "Ngày hẹn",
+      "is_priority": "Ưu tiên",
+      "clinic_room": "Phòng khám",
+      "services": "Dịch vụ",
+      "service_packages": "Gói dịch vụ",
+      "reason": "Lý do khám",
+      "walk_in": "Chờ khám",
+      "scheduled": "Đặt lịch trước"
+    },
+    "form": {
+      "registration_code_label": "Phiếu đăng ký",
+      "registration_type_label": "Loại đăng ký",
+      "appointment_date_label": "Ngày hẹn",
+      "appointment_time_label": "Khung giờ",
+      "priority_label": "Ưu tiên",
+      "clinic_room_label": "Phòng khám",
+      "service_label": "Dịch vụ",
+      "package_label": "Gói dịch vụ",
+      "reason_label": "Lý do khám",
+      "submit_button": "Lưu",
+      "submit_create": "Đăng ký khám",
+      "submit_edit": "Lưu",
+      "characters_remaining": "ký tự còn lại",
+      "confirm_create_message": "Bạn có chắc chắn muốn đăng ký lượt khám này?",
+      "confirm_edit_message": "Bạn có chắc chắn muốn cập nhật lượt khám này?"
+    },
+    "customer_search": {
+      "no_results_hint": "Không tìm thấy khách hàng. Tạo mới tại module KH."
+    },
+    "action": {
+      "search": "Tìm kiếm"
+    },
+    "statuses": {
+      "all": "Tất cả",
+      "waiting": "Chờ khám",
+      "examining": "Đang khám",
+      "completed": "Đã hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "tab": {
+      "customer": {
+        "label": "Thông tin KH",
+        "placeholder": "Danh sách khách hàng sẽ hiển thị ở đây"
+      },
+      "examination": {
+        "label": "Danh sách khám",
+        "placeholder": "Danh sách phiếu khám sẽ hiển thị ở đây"
+      },
+      "appointment": {
+        "label": "Lịch hẹn",
+        "placeholder": "Danh sách lịch hẹn sẽ hiển thị ở đây"
+      }
+    },
+    "tab1": {
+      "search_placeholder": "Tìm theo mã BN, tên, hoặc SĐT",
+      "no_customer_found": "Không tìm thấy khách hàng",
+      "create_customer_link": "Tạo khách hàng mới",
+      "customer_code_label": "Mã bệnh nhân",
+      "customer_name_label": "Họ và tên",
+      "phone_label": "Số điện thoại",
+      "select_customer_hint": "Chọn một khách hàng từ danh sách",
+      "reset_button": "Đặt lại",
+      "detail_title": "Thông tin chi tiết",
+      "gender_label": "Giới tính",
+      "dob_label": "Ngày sinh",
+      "address_label": "Địa chỉ"
+    },
+    "tab2": {
+      "title": "Danh sách khám",
+      "empty_state": "Không có phiếu khám trong khoảng thời gian này",
+      "date_from_label": "Từ ngày",
+      "date_to_label": "Đến ngày",
+      "status_label": "Trạng thái",
+      "cancel_confirm_title": "Xác nhận hủy",
+      "cancel_confirm_message": "Bạn có chắc muốn hủy phiếu khám này?",
+      "delete_confirm_title": "Xác nhận xóa",
+      "delete_confirm_message": "Bạn có chắc muốn xóa phiếu khám này? Hành động này không thể hoàn tác.",
+      "column_queue": "STT",
+      "column_customer_code": "Mã KH",
+      "column_visit_code": "Mã phiếu",
+      "column_name": "Tên KH",
+      "column_registered_at": "Thời gian",
+      "column_gender": "Giới tính",
+      "column_phone": "SĐT",
+      "column_status": "Trạng thái",
+      "column_actions": "Hành động",
+      "cancel_button": "Hủy",
+      "delete_button": "Xóa",
+      "reset_button": "Đặt lại"
+    },
+    "tab3": {
+      "title": "Lịch hẹn",
+      "empty_state": "Không có lịch hẹn",
+      "search_placeholder": "Tìm theo mã ĐK, mã KH, tên, SĐT",
+      "date_from_label": "Từ ngày",
+      "date_to_label": "Đến ngày",
+      "status_label": "Trạng thái",
+      "checkin_button": "Tiếp nhận",
+      "cancel_button": "Hủy",
+      "detail_button": "Chi tiết",
+      "cancel_confirm_title": "Xác nhận hủy",
+      "cancel_confirm_message": "Bạn có chắc muốn hủy lịch hẹn này?",
+      "drawer_title": "Chi tiết lịch hẹn",
+      "activity_log_title": "Lịch sử thao tác",
+      "column_code": "Mã ĐK",
+      "column_customer": "Mã KH",
+      "column_appointment_date": "Ngày khám",
+      "column_room": "Phòng khám",
+      "column_phone": "SĐT",
+      "column_status": "Trạng thái",
+      "column_created_at": "Ngày tạo",
+      "column_actions": "Hành động"
     }
   }
 }

@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             UserSeeder::class,
             LocationSeeder::class,
+            ClinicRoomSeeder::class,
+            ServiceSeeder::class,
+            ServicePackageSeeder::class,
             AppointmentSeeder::class,
         ]);
     }

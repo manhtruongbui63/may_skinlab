@@ -73,6 +73,7 @@ Yêu cầu auth middleware (`auth:sanctum`). Sử dụng `ApiFactory` để reso
 | 4 | `COMPLETED` | Đã hoàn thành khám |
 | 5 | `CANCELLED` | Đã hủy |
 | 6 | `NO_SHOW` | Không đến hẹn |
+| 7 | `OVERDUE` | Quá hạn (chưa đến sau ngày hẹn) |
 
 ## FLOW
 

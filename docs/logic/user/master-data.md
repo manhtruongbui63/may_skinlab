@@ -4,8 +4,11 @@ title: Master Data — Dữ Liệu Tham Chiếu
 description: Luồng lấy master data resources theo cấu hình driver động.
 type: workflow
 priority: low
-version: "1.1.0"
+version: "1.2.0"
 changelog:
+  - version: "1.2.0"
+    date: "2026-06-15"
+    summary: "Thêm 3 reception master data resources: clinic_rooms, services, service_packages."
   - version: "1.1.0"
     date: "2026-05-11"
     summary: "Thêm 7 sample resources để demo đầy đủ các driver cho FE."
@@ -44,6 +47,11 @@ API `GET /master-data` trả về danh sách resources theo cấu hình driver (
 | `active_users` | Eloquent | User đang active, có `where` filter | Dropdown chỉ active |
 | `users_paginated` | Custom | User có phân trang + tìm kiếm | Select search + load more |
 | `countries` | Config | Danh sách quốc gia từ `config('common.countries')` | Dropdown quốc gia |
+| `provinces` | Eloquent | Danh sách tỉnh/thành phố | Dropdown tỉnh/thành |
+| `wards` | Custom | Danh sách phường/xã theo tỉnh | Dropdown phường/xã |
+| `clinic_rooms` | Eloquent | Danh sách phòng khám active | Dropdown chọn phòng |
+| `services` | Eloquent | Danh sách dịch vụ active | Dropdown dịch vụ |
+| `service_packages` | Eloquent | Danh sách gói dịch vụ active | Dropdown gói khám |
 
 ## ENTITIES
 

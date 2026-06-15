@@ -16,6 +16,7 @@ enum AppointmentStatusEnum: int
     case COMPLETED = 4;
     case CANCELLED = 5;
     case NO_SHOW = 6;
+    case OVERDUE = 7;
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum AppointmentStatusEnum: int
             self::COMPLETED => trans('enums.appointment_status.completed'),
             self::CANCELLED => trans('enums.appointment_status.cancelled'),
             self::NO_SHOW => trans('enums.appointment_status.no_show'),
+            self::OVERDUE => trans('enums.appointment_status.overdue'),
         };
     }
 }
