@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Api\Customer;
 
 use App\Enums\CustomerStatusEnum;
-use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
 use App\Models\Customer;
 use App\Models\User;

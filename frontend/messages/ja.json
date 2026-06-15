@@ -53,7 +53,8 @@
     "search": "検索"
   },
   "menu": {
-    "dashboard": "ダッシュボード"
+    "dashboard": "ダッシュボード",
+    "reception": "受付"
   },
   "ChangePassword": {
     "trigger": "パスワード変更",
@@ -391,6 +392,142 @@
       "description": "この予約を削除してもよろしいですか？この操作は元に戻せません。",
       "confirm": "削除",
       "cancel": "キャンセル"
+    }
+  },
+
+  "reception": {
+    "toasts": {
+      "visit_created": "来院登録が完了しました。",
+      "visit_cancelled": "来院をキャンセルしました。",
+      "visit_deleted": "来院を削除しました。",
+      "visit_created_from_appointment": "予約からのチェックインが完了しました。",
+      "appointment_cancelled": "予約をキャンセルしました。",
+      "checkin_success": "チェックインが完了しました。"
+    },
+    "errors": {
+      "registration_type_required": "登録タイプは必須です",
+      "date_must_be_future": "予約日は未来の日付を選択してください",
+      "room_required": "直接来院の場合は診察室が必須です",
+      "service_required": "少なくとも1つのサービスを選択してください",
+      "reason_too_long": "来院理由は500文字以内で入力してください",
+      "customer_required": "顧客は必須です",
+      "appointment_not_booked": "この予約はチェックインできません",
+      "from_date_must_be_before_to_date": "開始日は終了日より前の日付を選択してください"
+    },
+    "labels": {
+      "registration_type": "登録タイプ",
+      "appointment_date": "予約日",
+      "is_priority": "優先",
+      "clinic_room": "診察室",
+      "services": "サービス",
+      "service_packages": "サービスパッケージ",
+      "reason": "来院理由",
+      "walk_in": "受診待ち",
+      "scheduled": "予約あり"
+    },
+    "form": {
+      "registration_code_label": "登録フォーム",
+      "registration_type_label": "登録タイプ",
+      "appointment_date_label": "予約日",
+      "appointment_time_label": "時間帯",
+      "priority_label": "優先",
+      "clinic_room_label": "診察室",
+      "service_label": "サービス",
+      "package_label": "パッケージ",
+      "reason_label": "来院理由",
+      "submit_button": "保存",
+      "submit_create": "来院登録",
+      "submit_edit": "保存",
+      "characters_remaining": "文字残り",
+      "confirm_create_message": "この来院を登録してもよろしいですか？",
+      "confirm_edit_message": "この来院を更新してもよろしいですか？"
+    },
+    "customer_search": {
+      "no_results_hint": "顧客が見つかりません。顧客モジュールで新規作成してください。"
+    },
+    "action": {
+      "search": "検索"
+    },
+    "statuses": {
+      "all": "すべて",
+      "waiting": "受診待ち",
+      "examining": "診察中",
+      "completed": "完了",
+      "cancelled": "キャンセル済"
+    },
+    "tab": {
+      "customer": {
+        "label": "顧客情報",
+        "placeholder": "顧客リストがここに表示されます"
+      },
+      "examination": {
+        "label": "検査リスト",
+        "placeholder": "来院リストがここに表示されます"
+      },
+      "appointment": {
+        "label": "予約",
+        "placeholder": "予約リストがここに表示されます"
+      }
+    },
+    "tab1": {
+      "search_placeholder": "患者コード、名前、または電話番号で検索",
+      "no_customer_found": "顧客が見つかりません",
+      "create_customer_link": "新規顧客を作成",
+      "customer_code_label": "患者コード",
+      "customer_name_label": "氏名",
+      "phone_label": "電話番号",
+      "select_customer_hint": "リストから顧客を選択してください",
+      "reset_button": "リセット",
+      "detail_title": "詳細情報",
+      "gender_label": "性別",
+      "dob_label": "生年月日",
+      "address_label": "住所"
+    },
+    "tab2": {
+      "title": "検査リスト",
+      "empty_state": "この期間に来院記録がありません",
+      "date_from_label": "開始日",
+      "date_to_label": "終了日",
+      "status_label": "ステータス",
+      "cancel_confirm_title": "キャンセル確認",
+      "cancel_confirm_message": "この来院をキャンセルしますか？",
+      "delete_confirm_title": "削除確認",
+      "delete_confirm_message": "この来院を削除しますか？この操作は元に戻せません。",
+      "column_queue": "順番",
+      "column_customer_code": "顧客コード",
+      "column_visit_code": "来院コード",
+      "column_name": "顧客名",
+      "column_registered_at": "登録日時",
+      "column_gender": "性別",
+      "column_phone": "電話",
+      "column_status": "ステータス",
+      "column_actions": "アクション",
+      "cancel_button": "キャンセル",
+      "delete_button": "削除",
+      "reset_button": "リセット"
+    },
+    "tab3": {
+      "title": "予約",
+      "empty_state": "予約がありません",
+      "search_placeholder": "登録コード、顧客コード、名前、電話で検索",
+      "date_from_label": "開始日",
+      "date_to_label": "終了日",
+      "status_label": "ステータス",
+      "checkin_button": "チェックイン",
+      "cancel_button": "キャンセル",
+      "detail_button": "詳細",
+      "cancel_confirm_title": "キャンセル確認",
+      "cancel_confirm_message": "この予約をキャンセルしますか？",
+      "drawer_title": "予約詳細",
+      "activity_log_title": "アクティビティログ",
+      "column_code": "登録コード",
+      "column_customer": "顧客",
+      "column_appointment_date": "予約日",
+      "column_room": "診察室",
+      "column_phone": "電話",
+      "column_status": "ステータス",
+      "column_created_at": "作成日",
+      "column_actions": "アクション"
     }
   }
 }

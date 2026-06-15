@@ -109,6 +109,26 @@ class AppointmentController extends BaseController
     }
 
     /**
+     * Cancel an appointment (transition BOOKED → CANCELLED).
+     *
+     * @param Appointment $appointment
+     * @return JsonResponse
+     */
+    public function cancel(Appointment $appointment): JsonResponse
+    {
+        $appointment = ApiFactory::getAppointmentService()
+            ->withUser($this->guard()->user())
+            ->cancel($appointment);
+
+        return response()->json([
+            'success' => true,
+            'message' => trans('reception.appointment_cancelled'),
+            'errors' => null,
+            'data' => new AppointmentResource($appointment),
+        ]);
+    }
+
+    /**
      * Delete (soft delete) an appointment.
      *
      * @param Appointment $appointment

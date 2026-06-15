@@ -6,6 +6,9 @@ use App\Enums\CustomerSourceEnum;
 use App\Enums\CustomerStatusEnum;
 use App\Enums\GenderEnum;
 use App\Enums\UserStatus;
+use App\Models\ClinicRoom;
+use App\Models\Service;
+use App\Models\ServicePackage;
 use App\Models\Province;
 use App\Models\Ward;
 use App\Models\User;
@@ -95,6 +98,29 @@ class MasterDataService extends BaseMasterDataService
         'wards' => [
             'driver' => self::DRIVER_CUSTOM,
             'target' => 'getWards',
+        ],
+
+        // ─── Reception Master Data ───────────────────────────
+        'clinic_rooms' => [
+            'driver' => self::DRIVER_ELOQUENT,
+            'target' => ClinicRoom::class,
+            'select' => ['id', 'name', 'code'],
+            'where' => [['is_active', '=', true]],
+            'order' => ['name', 'asc'],
+        ],
+        'services' => [
+            'driver' => self::DRIVER_ELOQUENT,
+            'target' => Service::class,
+            'select' => ['id', 'name', 'code', 'price'],
+            'where' => [['is_active', '=', true]],
+            'order' => ['name', 'asc'],
+        ],
+        'service_packages' => [
+            'driver' => self::DRIVER_ELOQUENT,
+            'target' => ServicePackage::class,
+            'select' => ['id', 'name', 'code', 'price'],
+            'where' => [['is_active', '=', true]],
+            'order' => ['name', 'asc'],
         ],
     ];
 

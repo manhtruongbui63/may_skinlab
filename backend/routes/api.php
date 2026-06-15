@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\LogController;
-use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\MasterDataController;
 use App\Http\Controllers\Api\UploadImageController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VisitController;
+use Illuminate\Support\Facades\Route;
 
 // Client (frontend) log ingest. Public so errors are captured even before
 // login; its own 'log' limiter absorbs batches while still bounding abuse.
@@ -20,6 +21,9 @@ Route::middleware('throttle:api')->group(function () {
     Route::get('/master-data', [MasterDataController::class, 'show'])->name('masterData');
     Route::post('/upload-image', [UploadImageController::class, 'upload'])->name('uploadImage');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    // Public customer search for reception (no auth required)
+    Route::get('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
 
     Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
         // Stricter throttle for credential-sensitive endpoints (see the 'auth'
@@ -53,6 +57,16 @@ Route::middleware('throttle:api')->group(function () {
         Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
         Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
         Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
+        Route::patch('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
         Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+        // Visit routes
+        Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
+        Route::post('/visits', [VisitController::class, 'store'])->name('visits.store');
+        Route::put('/visits/{id}', [VisitController::class, 'update'])->name('visits.update');
+        Route::post('/visits/from-appointment', [VisitController::class, 'storeFromAppointment'])
+            ->name('visits.store-from-appointment');
+        Route::patch('/visits/{id}/cancel', [VisitController::class, 'cancel'])->name('visits.cancel');
+        Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
     });
 });

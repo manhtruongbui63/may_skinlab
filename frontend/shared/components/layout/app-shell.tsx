@@ -11,8 +11,8 @@ import { menuConfig } from "@/shared/config/menu";
 import { cn } from "@/shared/lib/utils";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { 
-  Button, 
+import {
+  Button,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -120,28 +120,28 @@ export const AppShell: React.FC<AppShellProps> = ({ children, initialCollapsed =
 
         {user && (
           <div className="border-t p-4 shrink-0">
-             {/* User Profile / Logout Trigger */}
-             <button 
-               onClick={() => setIsLogoutOpen(true)}
-               className={cn(
-                 "flex w-full items-center rounded-lg p-2 transition-colors hover:bg-secondary/70 cursor-pointer",
-                 isCollapsed ? "justify-center" : "space-x-3 bg-secondary/50 text-left"
-               )}
-             >
-               <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary/20 font-bold text-primary shrink-0">
-                  {user?.avatar ? (
-                    <Image src={user.avatar} alt="Avatar" fill className="object-cover" sizes="32px" />
-                  ) : (
-                    <>{user?.name?.charAt(0).toUpperCase() || "U"}</>
-                  )}
-                </div>
-                {!isCollapsed && (
-                  <div className="flex-1 truncate text-xs">
-                     <p className="font-semibold">{user?.name || t("userName")}</p>
-                     <p className="opacity-60">{user?.email || t("userEmail")}</p>
-                  </div>
+            {/* User Profile / Logout Trigger */}
+            <button
+              onClick={() => setIsLogoutOpen(true)}
+              className={cn(
+                "flex w-full items-center rounded-lg p-2 transition-colors hover:bg-secondary/70 cursor-pointer",
+                isCollapsed ? "justify-center" : "space-x-3 bg-secondary/50 text-left"
+              )}
+            >
+              <div className="relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-primary/20 font-bold text-primary shrink-0">
+                {user?.avatar ? (
+                  <Image src={user.avatar} alt="Avatar" fill className="object-cover" sizes="32px" />
+                ) : (
+                  <>{user?.name?.charAt(0).toUpperCase() || "U"}</>
                 )}
-             </button>
+              </div>
+              {!isCollapsed && (
+                <div className="flex-1 truncate text-xs">
+                  <p className="font-semibold">{user?.name || t("userName")}</p>
+                  <p className="opacity-60">{user?.email || t("userEmail")}</p>
+                </div>
+              )}
+            </button>
           </div>
         )}
       </aside>
@@ -165,41 +165,41 @@ export const AppShell: React.FC<AppShellProps> = ({ children, initialCollapsed =
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
-             {!isInitialized ? (
-               <div className="h-9 w-24" />
-             ) : user ? (
-               <Button
-                 variant="outline"
-                 size="sm"
-                 onClick={() => setIsChangePasswordOpen(true)}
-               >
-                  {tAuth("trigger")}
-               </Button>
-             ) : (
-               <>
-                 <Link href="/login">
-                   <Button variant="outline" size="sm">
-                     {t("login")}
-                   </Button>
-                 </Link>
-                 <Link href="/register">
-                   <Button size="sm">
-                     {t("register")}
-                   </Button>
-                 </Link>
-               </>
-             )}
-             <ThemeToggle />
-             <LocaleSwitcher />
+            {!isInitialized ? (
+              <div className="h-9 w-24" />
+            ) : user ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsChangePasswordOpen(true)}
+              >
+                {tAuth("trigger")}
+              </Button>
+            ) : (
+              <>
+                <Link href="/login">
+                  <Button variant="outline" size="sm">
+                    {t("login")}
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button size="sm">
+                    {t("register")}
+                  </Button>
+                </Link>
+              </>
+            )}
+            <ThemeToggle />
+            <LocaleSwitcher />
           </div>
         </header>
 
         {/* Content */}
         <main
           ref={mainRef}
-          className="flex-1 overflow-y-auto bg-muted/20 p-4 lg:p-8 mt-16"
+          className="flex-1 overflow-y-auto bg-muted/20 mt-16 p-6"
         >
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto">
             <PageContentTransition scrollContainerRef={mainRef}>
               {children}
             </PageContentTransition>
@@ -222,8 +222,8 @@ export const AppShell: React.FC<AppShellProps> = ({ children, initialCollapsed =
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isLoggingOut}>Hủy</AlertDialogCancel>
-            <AlertDialogAction 
-              tone="destructive" 
+            <AlertDialogAction
+              tone="destructive"
               onClick={(e) => {
                 e.preventDefault();
                 handleLogout();

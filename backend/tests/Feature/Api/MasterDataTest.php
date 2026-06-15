@@ -223,4 +223,25 @@ class MasterDataTest extends TestCase
                 ],
             ]);
     }
+
+    public function test_can_get_reception_master_data(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->getJson('/api/master-data?resources[clinic_rooms]={}&resources[services]={}&resources[service_packages]={}');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'data' => [
+                    'clinic_rooms' => [
+                        '*' => ['id', 'name', 'code'],
+                    ],
+                    'services' => [
+                        '*' => ['id', 'name', 'code', 'price'],
+                    ],
+                    'service_packages' => [
+                        '*' => ['id', 'name', 'code', 'price'],
+                    ],
+                ],
+            ]);
+    }
 }

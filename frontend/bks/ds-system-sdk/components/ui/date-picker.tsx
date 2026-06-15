@@ -4,6 +4,9 @@ import * as React from "react"
 import dayjs from "dayjs"
 import { CalendarIcon } from "lucide-react"
 import type { DateRange } from "react-day-picker"
+import { useLocale } from "next-intl"
+import "dayjs/locale/vi"
+import "dayjs/locale/ja"
 
 import { Button } from "./button"
 import { Calendar } from "./calendar"
@@ -354,6 +357,12 @@ function TimePickerPanel({
   precision: DatePickerTimePrecision
   selectedValue: DatePickerValue
 }) {
+  const activeLocale = useLocale()
+  const dateLabel = activeLocale === "vi" ? "Ngày" : activeLocale === "jp" ? "日付" : "Date"
+  const fromLabel = activeLocale === "vi" ? "Từ" : activeLocale === "jp" ? "開始" : "From"
+  const toLabel = activeLocale === "vi" ? "Đến" : activeLocale === "jp" ? "終了" : "To"
+  const closeLabel = activeLocale === "vi" ? "Đóng" : activeLocale === "jp" ? "閉じる" : "Close"
+
   const rangeValue = isDateRange(selectedValue) ? selectedValue : undefined
 
   function updateRangeTime(edge: "from" | "to", nextDate: Date) {
@@ -371,14 +380,14 @@ function TimePickerPanel({
           <TimeFieldGroup
             date={rangeValue?.from}
             disabled={disabled}
-            label="From"
+            label={fromLabel}
             onDateTimeChange={(nextDate) => updateRangeTime("from", nextDate)}
             precision={precision}
           />
           <TimeFieldGroup
             date={rangeValue?.to}
             disabled={disabled}
-            label="To"
+            label={toLabel}
             onDateTimeChange={(nextDate) => updateRangeTime("to", nextDate)}
             precision={precision}
           />
@@ -387,7 +396,7 @@ function TimePickerPanel({
         <TimeFieldGroup
           date={selectedValue instanceof Date ? selectedValue : undefined}
           disabled={disabled}
-          label="Date"
+          label={dateLabel}
           onDateTimeChange={onValueChange}
           precision={precision}
         />
@@ -400,7 +409,7 @@ function TimePickerPanel({
           type="button"
           variant="secondary"
         >
-          Đóng
+          {closeLabel}
         </Button>
       </div>
     </div>
@@ -446,6 +455,13 @@ function calendarSizeForDatePicker(
 }
 
 function DatePicker(props: DatePickerProps) {
+  const activeLocale = useLocale()
+
+  React.useEffect(() => {
+    const dayjsLocale = activeLocale === "jp" ? "ja" : activeLocale
+    dayjs.locale(dayjsLocale)
+  }, [activeLocale])
+
   const {
     calendarProps,
     className,

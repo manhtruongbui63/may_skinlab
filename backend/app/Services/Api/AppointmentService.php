@@ -143,6 +143,35 @@ class AppointmentService extends Service
     }
 
     /**
+     * Cancel an appointment (transition BOOKED → CANCELLED).
+     *
+     * Only appointments with BOOKED status can be cancelled.
+     *
+     * @param Appointment $appointment
+     * @return Appointment
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function cancel(Appointment $appointment): Appointment
+    {
+        return DB::transaction(function () use ($appointment) {
+            // Check if appointment is in BOOKED status
+            if ($appointment->status !== AppointmentStatusEnum::BOOKED) {
+                throw ValidationException::withMessages([
+                    'status' => trans('reception.errors.appointment_not_cancellable'),
+                ]);
+            }
+
+            // Validate transition is allowed
+            $this->assertValidTransition($appointment, AppointmentStatusEnum::CANCELLED->value);
+
+            // Update status
+            $appointment->update(['status' => AppointmentStatusEnum::CANCELLED]);
+
+            return $appointment->fresh(['customer']);
+        });
+    }
+
+    /**
      * Build update payload, validating status transitions and double-booking.
      *
      * @param Appointment $appointment

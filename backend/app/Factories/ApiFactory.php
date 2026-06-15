@@ -6,16 +6,17 @@ use App\Services\Api\AppointmentService;
 use App\Services\Api\AuthService;
 use App\Services\Api\CustomerService;
 use App\Services\Api\LogService;
+use App\Services\Api\MasterDataService;
 use App\Services\Api\UserService;
 use App\Services\Api\UserTableService;
-use App\Services\Api\MasterDataService;
+use App\Services\Api\VisitService;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\Application;
 
 class ApiFactory
 {
     /**
-     * Register User Service
+     * Register API Services
      *
      * @param Application|Container $app
      * @return void
@@ -44,6 +45,10 @@ class ApiFactory
 
         $app->scoped(LogService::class, function ($app) {
             return new LogService();
+        });
+
+        $app->scoped(VisitService::class, function ($app) {
+            return new VisitService();
         });
 
         $app->bind(UserTableService::class, function ($app) {
@@ -119,5 +124,15 @@ class ApiFactory
     public static function getAppointmentService(): AppointmentService
     {
         return app(AppointmentService::class);
+    }
+
+    /**
+     * Get Visit Service
+     *
+     * @return VisitService
+     */
+    public static function getVisitService(): VisitService
+    {
+        return app(VisitService::class);
     }
 }

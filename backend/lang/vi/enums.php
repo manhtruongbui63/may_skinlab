@@ -28,5 +28,16 @@ return [
         'completed' => 'Hoàn thành',
         'cancelled' => 'Đã hủy',
         'no_show' => 'Không đến',
+        'overdue' => 'Quá hẹn',
+    ],
+    'registration_type' => [
+        'walk_in' => 'Chờ khám',
+        'scheduled' => 'Đặt lịch',
+    ],
+    'visit_status' => [
+        'waiting' => 'Chờ khám',
+        'in_progress' => 'Đang khám',
+        'completed' => 'Đã hoàn thành',
+        'cancelled' => 'Đã hủy',
     ],
 ];

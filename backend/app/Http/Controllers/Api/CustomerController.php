@@ -48,6 +48,40 @@ class CustomerController extends Controller
     }
 
     /**
+     * Search customers by name, phone, or code (public endpoint for reception).
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return JsonResponse
+     */
+    public function search(\Illuminate\Http\Request $request): JsonResponse
+    {
+        $search = $request->get('search', '');
+
+        if (empty($search) || strlen($search) < 2) {
+            return response()->json([
+                'success' => true,
+                'message' => '',
+                'errors' => null,
+                'data' => [],
+            ]);
+        }
+
+        $customers = Customer::query()
+            ->where('full_name', 'like', "%{$search}%")
+            ->orWhere('phone', 'like', "%{$search}%")
+            ->orWhere('code', 'like', "%{$search}%")
+            ->limit(20)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'errors' => null,
+            'data' => CustomerResource::collection($customers),
+        ]);
+    }
+
+    /**
      * Get customer detail.
      *
      * @param Customer $customer

@@ -2,6 +2,7 @@
 
 namespace App\Factories;
 
+use App\Services\Background\MarkOverdueAppointmentsService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Container\Container;
 
@@ -15,10 +16,7 @@ class BackgroundFactory
      */
     public static function register($app): void
     {
-        // Example registration:
-        // $app->scoped(\App\Services\Background\ExampleBackgroundService::class, function ($app) {
-        //     return new \App\Services\Background\ExampleBackgroundService();
-        // });
+        // Services are resolved via app() container
     }
 
     /*
@@ -27,11 +25,13 @@ class BackgroundFactory
     |--------------------------------------------------------------------------
     | Add static methods for each Background Service to provide type safety
     | and clear visibility of available services.
-    |
-    | Example:
-    | public static function getExampleService(): ExampleBackgroundService
-    | {
-    |     return app(ExampleBackgroundService::class);
-    | }
     */
+
+    /**
+     * Get the MarkOverdueAppointments background service.
+     */
+    public static function getMarkOverdueAppointmentsBackgroundService(): MarkOverdueAppointmentsService
+    {
+        return app(MarkOverdueAppointmentsService::class);
+    }
 }
